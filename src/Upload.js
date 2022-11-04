@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-const Post = () => {
+function Upload() {
+
     // Initialize firebase storage for images
     const storage = getStorage();
 
@@ -97,24 +98,36 @@ const Post = () => {
             });
         }
     }
- 
+
     return (
-        <div className="output-section">
-            <h1>All Posts:</h1>
-            {posts?.map((post,i)=>(
-            <div className="post">
-                <div className="img-container">
-                    <img className="post-img" src={post.image}></img>
-                </div>
-                <div classname="post-info">
-                    <p key={i}>Poster: {post.poster}</p>
-                    <p key={i}>Caption: {post.caption}</p>
-                    <p key={i}>Tags: {post.tags?.map((tag, i)=>(tag + " "))}</p>
-                </div>
+        <div className="Upload">
+                <h1>Upload Post Here</h1>
+                <form>
+                    <div className="inputs">
+                        <div className="input-wrapper">
+                            <h2 className="input-title">Post Image</h2>
+                            <input type="file" name="image" accept="image/*" value={post.image} onChange={handlePost}/>
+                        </div>
+                        <div className="input-wrapper">
+                            <h2 className="input-title">Post Caption</h2>
+                            <input type="text" placeholder="Enter caption" name="caption" value={post.caption} onChange={handlePost}/>
+                        </div>
+                        <div className="input-wrapper">
+                            <h2 className="input-title">Post Tags</h2>
+                            <input type="checkbox" id="club" name="tags" value="club" onChange={handlePost}/>
+                            <label for="vehicle1">Club</label>
+                            <input type="checkbox" id="gathering" name="tags" value="gathering" onChange={handlePost}/>
+                            <label for="vehicle2">Gathering</label>
+                            <input type="checkbox" id="alert" name="tags" value="alert" onChange={handlePost}/>
+                            <label for="vehicle3">Alert</label>
+                        </div>
+                        <div className="input-wrapper">
+                            <button type="submit" className="btn" onClick={addPost}>Submit post</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        ))}
-        </div>
     )
 }
- 
-export default Post
+
+export default Upload
