@@ -1,13 +1,13 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-
+import './Navbar.css'
 
 const Navbar = () => {
-    return (  
-        <ul>
-            <li><Link to="/post">All Posts</Link></li>
-            <li><Link to="/upload">Upload a new post</Link></li>
-        </ul>
+    return (
+	<div>
+	    <button class="button"><Link to="/post" class="text-format">All Posts</Link></button>
+	    <button class="button"><Link to="/upload" class="text-format">Upload Post</Link></button>
+	</div>
     );
 }
 

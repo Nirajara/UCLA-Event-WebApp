@@ -100,7 +100,7 @@ const Post = () => {
  
     return (
         <div className="output-section">
-            <h1>All Posts:</h1>
+            <h1>All Posts</h1>
             {posts?.map((post,i)=>(
             <div className="post">
                 <div className="img-container">
