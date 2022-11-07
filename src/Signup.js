@@ -17,6 +17,7 @@ const Signup = () => {
     })
 
     const [input, setInput] = useState({
+        name: "",
         email: "",
         password: ""
     });
@@ -30,10 +31,9 @@ const Signup = () => {
                 // Signed in 
                 const uid = userCredential.user.uid;
                 // ...
-
-                setPersistence('local')
                 signInWithEmailAndPassword(auth, input.email, input.password).then(() => {
-                    setDoc(addDoc(db, "users"), {
+                    setDoc(doc(db, "users", uid), {
+                        name: input.name,
                         email: input.email,
                         bio: "",
                         posts: []
@@ -43,6 +43,7 @@ const Signup = () => {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
+                console.log(error)
                 // ..
         });
         navPages()
@@ -85,6 +86,10 @@ const Signup = () => {
                 <h1>Sign up here</h1>
                 <form>
                     <div className="inputs">
+                    <div className="input-wrapper">
+                            <h2 className="input-title">Name</h2>
+                            <input type="text" placeholder="Enter name" name="name" value={input.name} onChange={handleLogin}/>
+                        </div>
                         <div className="input-wrapper">
                             <h2 className="input-title">Email</h2>
                             <input type="text" placeholder="Enter email" name="email" value={input.email} onChange={handleLogin}/>

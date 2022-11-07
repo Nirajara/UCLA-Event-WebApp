@@ -1,9 +1,9 @@
 import "./App.css";
 import {db} from './firebase'
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, getDoc, doc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Post = () => {
     // Initialize firebase storage for images
@@ -11,6 +11,9 @@ const Post = () => {
     const auth = getAuth();
 
     // Initializing state variables to store image and other post data
+    const [state, setState] = useState({
+        user: ""
+    })
     const [imageUpload, setImage] = useState();
     const [post, setPost] = useState({
         caption: "",
@@ -23,19 +26,24 @@ const Post = () => {
         e.preventDefault();  
         try {
             const storageRef = ref(storage, imageUpload.name);
+            const user_doc = await getDoc(doc(db, "users", state.user));
             await uploadBytes(storageRef, imageUpload).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then( url => {
-                    console.log('succ')
                     addDoc(collection(db, "posts"), {
                         image: url,
                         caption: post.caption,
                         tags: post.tags,
-                        poster: "TBD",
+                        poster: user_doc.data().name,
                         location: "TBD",
                         timstamp: "TBD",
                         likes: [],
                         comments: []
-                    }).then(() => {
+                    }).then(docRef => {
+                        const posts = user_doc.data().posts;
+                        posts.push(docRef.id)
+                        updateDoc(doc(db, "users", state.user), {
+                            posts: posts
+                        });
                         forceUpdate();
                     });
                 });
@@ -60,6 +68,13 @@ const Post = () => {
    
     // This is triggered upon re-rendering
     useEffect(()=>{
+        onAuthStateChanged(auth, (user) => {
+            if (user) { 
+                setState({
+                    user: user.uid
+                })
+            }
+        });
         fetchPost();
     }, [])
     
