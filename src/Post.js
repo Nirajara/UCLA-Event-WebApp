@@ -3,10 +3,12 @@ import {db} from './firebase'
 import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const Post = () => {
     // Initialize firebase storage for images
     const storage = getStorage();
+    const auth = getAuth();
 
     // Initializing state variables to store image and other post data
     const [imageUpload, setImage] = useState();
@@ -33,12 +35,18 @@ const Post = () => {
                         timstamp: "TBD",
                         likes: [],
                         comments: []
+                    }).then(() => {
+                        forceUpdate();
                     });
                 });
               });
           } catch (e) {
             console.error("Error adding post: ", e);
           }
+    }
+
+    function forceUpdate() {
+        window.location.reload(false);
     }
     
     // fetchPost gathers all posts squentially and stores them in the "posts" state variable
