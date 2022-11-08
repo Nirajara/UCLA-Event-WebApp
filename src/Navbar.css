@@ -1,0 +1,32 @@
+.button {
+    background-color: #008CBA;
+    transition-duration: 0.4s;
+    font-size: 24px;
+    padding: 12px 28px;
+    border-radius: 8px;
+    color: #001111;
+    border: 2px solid #008CBA;
+    align-items: center;
+    float: left;
+    font-family: "Century Gothic";
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #001111;
+    border: 2px solid #001111;
+    color: #008CBA;
+    text-decoration: none;
+}
+
+.text-format, .text-format:link, .text-format:visited, .text-format:active {
+    text-decoration: none;
+    color: #001111;
+    transition-duration: 0.4s;
+}
+
+.text-format:hover {
+    color: #008CBA;
+    text-decoration: none;
+    padding: 12px 28px;
+}

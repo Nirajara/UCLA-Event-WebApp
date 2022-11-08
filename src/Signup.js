@@ -4,13 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { collection, doc, addDoc, setDoc, getDocs } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence, signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
     // Initialize firebase storage for images
     const storage = getStorage();
     const auth = getAuth();
-    const history = useNavigate();
+    //const history = useNavigate();
 
     const [status, setStatus] = useState({
         status: "signed out"
@@ -46,11 +46,6 @@ const Signup = () => {
                 console.log(error)
                 // ..
         });
-        navPages()
-    }
-
-    function navPages() {
-        history('/Post');
     }
 
     function handleLogin(evt) {
