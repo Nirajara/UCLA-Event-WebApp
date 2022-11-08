@@ -3,7 +3,8 @@ import './App.css';
 import Post from './Post';
 import Upload from './Upload';
 import Navbar from './Navbar';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import Signup from './Signup'
+import { BrowserRouter as Router, Routes, Route, Link, Switch } from 'react-router-dom';
 
 // Switch from react-router-dom matches the path in the browser to one of the following 
 // and displays the matching component
@@ -16,9 +17,13 @@ function App() {
   return (
     <Router>
       <div className="App">
+
         <Navbar />
         <div className="content">
           <Switch>
+	    <Route exact path="/signup">
+	      <Signup />
+	    </Route>
             <Route exact path="/upload">
               <Upload />
             </Route>
@@ -34,5 +39,6 @@ function App() {
     </Router>
   );
 }
+
 
 export default App;
