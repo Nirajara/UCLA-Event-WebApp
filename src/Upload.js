@@ -101,7 +101,6 @@ function Upload() {
 
     return (
         <div className="Upload">
-                <h1>Upload Post Here</h1>
                 <form>
                     <div className="inputs">
                         <div className="input-wrapper">

@@ -28,7 +28,7 @@
     position: relative;
 }
 
-.button:hover {
+.button:hover .text-format, .button:hover {
     background-color: #001111;
     border: 2px solid #001111;
     color: #f5f5f5;
