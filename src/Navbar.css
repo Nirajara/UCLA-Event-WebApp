@@ -1,32 +1,49 @@
+
+.banner {
+    margin-top: 4.5%;
+    margin-left: -370px;
+    position: absolute;
+    width: 15%;
+    height: 100%;
+    border-radius: 1em;
+    border: 2px rgb(246, 205, 205) solid;
+    padding: 10px;
+    background-color: #df518a;
+    
+   
+
+}
+
 .button {
-    background-color: #008CBA;
+    background-color: #ffffff;
     transition-duration: 0.4s;
     font-size: 24px;
-    padding: 12px 28px;
+    padding: 5px 18px;
     border-radius: 8px;
     color: #001111;
-    border: 2px solid #008CBA;
-    align-items: center;
-    float: left;
+    border: 2px solid #edf3f5;
     font-family: "Century Gothic";
-    text-decoration: none;
+    display: block;
+    width: 98%;
+    position: relative;
 }
 
 .button:hover {
     background-color: #001111;
     border: 2px solid #001111;
-    color: #008CBA;
-    text-decoration: none;
+    color: #f5f5f5;
 }
 
 .text-format, .text-format:link, .text-format:visited, .text-format:active {
     text-decoration: none;
-    color: #001111;
+    color: #e14277;
     transition-duration: 0.4s;
+    padding: 0;
+    
 }
 
 .text-format:hover {
-    color: #008CBA;
+    color: #fbfeff;
     text-decoration: none;
     padding: 12px 28px;
 }
