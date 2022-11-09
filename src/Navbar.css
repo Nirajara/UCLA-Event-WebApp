@@ -1,14 +1,13 @@
 
 .banner {
-    margin-top: 4.5%;
     margin-left: -370px;
     position: absolute;
-    width: 15%;
-    height: 100%;
+    width: 10%;
+    height: 20%;
     border-radius: 1em;
-    border: 2px rgb(246, 205, 205) solid;
+    border: 2px solid #206bc8;
     padding: 10px;
-    background-color: #df518a;
+    background-color: #b7d4ff;
     
    
 
@@ -17,33 +16,32 @@
 .button {
     background-color: #ffffff;
     transition-duration: 0.4s;
-    font-size: 24px;
-    padding: 5px 18px;
+    font-size: 20px;
+    padding: 10px 18px;
     border-radius: 8px;
-    color: #001111;
-    border: 2px solid #edf3f5;
-    font-family: "Century Gothic";
+    border: 2px solid #206bc8;
+    font-family: "Copperplate Papyrus";
     display: block;
     width: 98%;
     position: relative;
 }
 
 .button:hover .text-format, .button:hover {
-    background-color: #001111;
-    border: 2px solid #001111;
-    color: #f5f5f5;
+    background-color: #206bc8;
+    border: 2px solid #206bc8;
+    color: #f0b401;
 }
 
 .text-format, .text-format:link, .text-format:visited, .text-format:active {
     text-decoration: none;
-    color: #e14277;
+    color: #f0b401;
     transition-duration: 0.4s;
-    padding: 0;
+    padding: 0px;
     
 }
 
 .text-format:hover {
     color: #fbfeff;
     text-decoration: none;
-    padding: 12px 28px;
+    padding: 10px 18px;
 }
