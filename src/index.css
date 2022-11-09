@@ -1,5 +1,6 @@
 body {
-  margin: 0;
+  margin-top: 1em;
+  margin-left: 30%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -13,7 +14,7 @@ code {
 }
 
 .post-form {
-  margin: 1em;
+  margin: 100em;
 }
 
 .inputs > * {
@@ -21,10 +22,11 @@ code {
 }
 
 .inputs, .post {
-  max-width: 15em;
+  max-width: 35em;
+  margin: 1em;
   border-radius: 1em;
-  border: 2px gray solid;
-  background-color: lightgrey;
+  border: 2px rgb(255, 0, 0) solid;
+  background-color: rgb(246, 205, 205);
 }
 
 .input-title {
@@ -37,8 +39,8 @@ code {
 }
 
 .post .img-container .post-info {
-  background-color: grey;
-  max-width: 100vw;
+  background-color: rgb(225, 21, 21);
+  max-width: 45vw;
   min-height: 28.5vw;
   max-height: 28.5vw;
   display: flex;
@@ -47,11 +49,22 @@ code {
 }
 
 .img-container .post-img {
-  width: 100%;
+  width: 80%;
   height: auto;
   margin-top: auto;
   margin-bottom: auto;
   margin-left: auto;
   margin-right: auto;
   border-radius: 1em;
+}
+
+.output-section{
+  color: white;
+  margin-top: 4.5%;
+  position: absolute;
+  background-color: #e15578
+  
+
+
+
 }

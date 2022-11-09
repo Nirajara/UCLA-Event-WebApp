@@ -1,4 +1,5 @@
 import "./App.css";
+import "./Navbar.js";
 import {db} from './firebase'
 import React, { useState, useEffect } from 'react';
 import { collection, doc, addDoc, setDoc, getDocs } from "firebase/firestore";
