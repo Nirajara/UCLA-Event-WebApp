@@ -21,6 +21,7 @@ code {
 }
 
 .inputs, .post {
+  margin: 1em;
   max-width: 15em;
   border-radius: 1em;
   border: 2px gray solid;
