@@ -1,21 +1,16 @@
-
 .banner {
     margin-left: -370px;
-    position: absolute;
+    position: fixed;
     width: 10%;
     height: 20%;
     border-radius: 1em;
     border: 2px solid #206bc8;
     padding: 10px;
     background-color: #b7d4ff;
-    
-   
-
 }
 
 .button {
     background-color: #ffffff;
-    transition-duration: 0.4s;
     font-size: 20px;
     padding: 10px 18px;
     border-radius: 8px;
@@ -35,7 +30,6 @@
 .text-format, .text-format:link, .text-format:visited, .text-format:active {
     text-decoration: none;
     color: #f0b401;
-    transition-duration: 0.4s;
     padding: 0px;
     
 }
