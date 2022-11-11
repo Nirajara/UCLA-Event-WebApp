@@ -6,7 +6,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence, signInWithEmailAndPassword } from "firebase/auth";
 //import { useNavigate } from 'react-router-dom';
 
-const Signup = () => {
+const SignIn = () => {
     // Initialize firebase storage for images
     const storage = getStorage();
     const auth = getAuth();
@@ -78,7 +78,6 @@ const Signup = () => {
     return (
         <section className="post-form">
             <div className="input-section">
-                <h1>Sign up here</h1>
                 <form>
                     <div className="inputs">
                     <div className="input-wrapper">
@@ -103,4 +102,4 @@ const Signup = () => {
     )
 }
 
-export default Signup
+export default SignIn

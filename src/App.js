@@ -3,7 +3,7 @@ import './App.css';
 import Post from './Post';
 import Upload from './Upload';
 import Navbar from './Navbar';
-import Signup from './Signup'
+import SignIn from './SignIn'
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 
 // Switch from react-router-dom matches the path in the browser to one of the following 
@@ -20,7 +20,7 @@ function App() {
         <Navbar />
         <div className="content">
           <Routes>
-            <Route exact path="/Signup" element={<Signup />}/>
+            <Route exact path="/SignIn" element={<SignIn />}/>
             <Route exact path="/Upload" element={<Upload />}/>
             <Route exact path="/Post" element={<Post />}/>
             <Route exact path="/" element={<Post />}/>

@@ -1,32 +1,35 @@
+.banner {
+    left: 5px;
+    position: fixed;
+    width: 10%;
+    height: 20%;
+    border-radius: 1em;
+    border: 2px solid #206bc8;
+    padding: 10px;
+    background-color: #b7d4ff;
+}
+
 .button {
-    background-color: #008CBA;
-    transition-duration: 0.4s;
-    font-size: 24px;
-    padding: 12px 28px;
+    background-color: #ffffff;
+    font-size: 20px;
+    padding: 10px 18px;
     border-radius: 8px;
-    color: #001111;
-    border: 2px solid #008CBA;
-    align-items: center;
-    float: left;
-    font-family: "Century Gothic";
-    text-decoration: none;
+    border: 2px solid #206bc8;
+    font-family: "Copperplate Papyrus";
+    display: block;
+    width: 98%;
+    position: relative;
 }
 
 .button:hover {
-    background-color: #001111;
-    border: 2px solid #001111;
-    color: #008CBA;
-    text-decoration: none;
+    background-color: #206bc8;
+    border: 2px solid #206bc8;
+    color: #f0b401;
 }
 
 .text-format, .text-format:link, .text-format:visited, .text-format:active {
     text-decoration: none;
-    color: #001111;
-    transition-duration: 0.4s;
-}
-
-.text-format:hover {
-    color: #008CBA;
-    text-decoration: none;
-    padding: 12px 28px;
+    color: #f0b401;
+    padding: 0px;
+    
 }

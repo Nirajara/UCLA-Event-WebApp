@@ -13,7 +13,8 @@ function Upload() {
     const [imageUpload, setImage] = useState();
     const [post, setPost] = useState({
         caption: "",
-        tags: []
+        tags: [],
+	tagString: ""
     });
     const [posts, setPosts] = useState([]);
 
@@ -29,6 +30,7 @@ function Upload() {
                         image: url,
                         caption: post.caption,
                         tags: post.tags,
+			tagString: post.tagString,
                         poster: "TBD",
                         location: "TBD",
                         timstamp: "TBD",
@@ -55,6 +57,16 @@ function Upload() {
     useEffect(()=>{
         fetchPost();
     }, [])
+
+    function tagsToString(tags) {
+	var tagString;
+	if (tags.length > 0)
+	    tagString = tags[0];
+	for (let i = 1; i < tags.length; i++) {
+	    tagString = tagString + ", " + tags[i];
+	}
+	return tagString;
+    }
     
     // Updates post data
     function handlePost(evt) {
@@ -75,7 +87,8 @@ function Upload() {
                 }
                 setPost({
                     ...post,
-                    tags: tags
+                    tags: tags,
+		    tagString: tagsToString(tags)
                 });
             } catch {
                 const tags = [];
@@ -86,7 +99,8 @@ function Upload() {
                 }
                 setPost({
                     ...post,
-                    tags: tags
+                    tags: tags,
+		    tagString: tagsToString(tags)
                 });
             }
         } 
@@ -101,7 +115,6 @@ function Upload() {
 
     return (
         <div className="Upload">
-                <h1>Upload Post Here</h1>
                 <form>
                     <div className="inputs">
                         <div className="input-wrapper">
