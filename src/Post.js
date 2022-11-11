@@ -17,7 +17,8 @@ const Post = () => {
     const [imageUpload, setImage] = useState();
     const [post, setPost] = useState({
         caption: "",
-        tags: []
+        tags: [],
+	tagString: ""
     });
     const [posts, setPosts] = useState([]);
 
@@ -33,6 +34,7 @@ const Post = () => {
                         image: url,
                         caption: post.caption,
                         tags: post.tags,
+			tagString: post.tagString,
                         poster: user_doc.data().name,
                         location: "TBD",
                         timstamp: "TBD",
@@ -77,6 +79,16 @@ const Post = () => {
         });
         fetchPost();
     }, [])
+
+    function tagsToString(tags) {
+	var tagString;
+	if (tags.length > 0)
+	    tagString = tags[0];
+	for (let i = 1; i < tags.length; i++) {
+	    tagString = tagString + ", " + tags[i];
+	}
+	return tagString;
+    }
     
     // Updates post data
     function handlePost(evt) {
@@ -97,7 +109,8 @@ const Post = () => {
                 }
                 setPost({
                     ...post,
-                    tags: tags
+                    tags: tags,
+		    tagString: tagsToString(tags)
                 });
             } catch {
                 const tags = [];
@@ -108,7 +121,8 @@ const Post = () => {
                 }
                 setPost({
                     ...post,
-                    tags: tags
+                    tags: tags,
+		    tagString: tagsToString(tags)
                 });
             }
         } 
@@ -131,7 +145,7 @@ const Post = () => {
                 <div classname="post-info">
                     <p key={i}>Poster: {post.poster}</p>
                     <p key={i}>Caption: {post.caption}</p>
-                    <p key={i}>Tags: {post.tags?.map((tag, i)=>(tag + " "))}</p>
+                    <p key={i}>Tags: {post.tagString}</p>
                 </div>
             </div>
         ))}

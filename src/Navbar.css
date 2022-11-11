@@ -1,5 +1,5 @@
 .banner {
-    margin-left: -370px;
+    left: 5px;
     position: fixed;
     width: 10%;
     height: 20%;
@@ -21,7 +21,7 @@
     position: relative;
 }
 
-.button:hover .text-format, .button:hover {
+.button:hover {
     background-color: #206bc8;
     border: 2px solid #206bc8;
     color: #f0b401;
@@ -32,10 +32,4 @@
     color: #f0b401;
     padding: 0px;
     
-}
-
-.text-format:hover {
-    color: #fbfeff;
-    text-decoration: none;
-    padding: 10px 18px;
 }
