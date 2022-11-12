@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDocs, getDoc, doc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { Link } from 'react-router-dom';
 
 const Post = () => {
     // Initialize firebase storage for images
@@ -137,6 +138,10 @@ const Post = () => {
  
     return (
         <div className="output-section">
+            <div className="transition-feature">
+                <h1>Navigate to the tentative user page</h1>
+                <Link to="/User" state={{id: "AJpPuzeERGPp9nkVhpoWRDBEkFE2"}}><p>To User Page</p></Link>
+            </div>
             {posts?.map((post,i)=>(
             <div className="post">
                 <div className="img-container">

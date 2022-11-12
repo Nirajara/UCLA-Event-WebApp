@@ -2,6 +2,7 @@ import React from "react";
 import './App.css';
 import Post from './Post';
 import Upload from './Upload';
+import User from './User';
 import Navbar from './Navbar';
 import SignIn from './SignIn'
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
@@ -22,6 +23,7 @@ function App() {
           <Routes>
             <Route exact path="/SignIn" element={<SignIn />}/>
             <Route exact path="/Upload" element={<Upload />}/>
+            <Route exact path="/User" element={<User />}/>
             <Route exact path="/Post" element={<Post />}/>
             <Route exact path="/" element={<Post />}/>
           </Routes>

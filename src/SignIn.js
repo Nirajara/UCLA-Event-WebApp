@@ -80,7 +80,7 @@ const SignIn = () => {
             <div className="input-section">
                 <form>
                     <div className="inputs">
-                    <div className="input-wrapper">
+                        <div className="input-wrapper">
                             <h2 className="input-title">Name</h2>
                             <input type="text" placeholder="Enter name" name="name" value={input.name} onChange={handleLogin}/>
                         </div>
