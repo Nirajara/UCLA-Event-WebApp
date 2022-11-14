@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDocs, getDoc, doc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Button from "react-bootstrap/Button"
+import Card from "react-bootstrap/Card"
+import Container from "react-bootstrap/Container"
+import "bootstrap/dist/css/bootstrap.min.css"
 
 const Post = () => {
     // Initialize firebase storage for images
@@ -135,26 +139,26 @@ const Post = () => {
             });
         }
     }
+
+    const navigate = useNavigate();
  
     return (
-        <div className="output-section">
-            <div className="transition-feature">
-                <h1>Navigate to the tentative user page</h1>
-                <Link to="/User" state={{id: "AJpPuzeERGPp9nkVhpoWRDBEkFE2"}}><p>To User Page</p></Link>
-            </div>
+        <Container className="output-section">
+            <Card className="transition-feature">
+                <Card.Text>Navigate to the tentative user page</Card.Text>
+                <Button variant="outline-warning" onClick={() => navigate("/user", { state: { id: "AJpPuzeERGPp9nkVhpoWRDBEkFE2"} })}>To User Page</Button>
+            </Card>
             {posts?.map((post,i)=>(
-            <div className="post">
-                <div className="img-container">
-                    <img className="post-img" src={post.image}></img>
-                </div>
-                <div classname="post-info">
+            <Card className="post">
+                <Card.Img className="img-container" src={post.image} />
+                <Card.Text classname="post-info">
                     <p key={i}>Poster: {post.poster}</p>
                     <p key={i}>Caption: {post.caption}</p>
                     <p key={i}>Tags: {post.tagString}</p>
-                </div>
-            </div>
+                </Card.Text>
+            </Card>
         ))}
-        </div>
+        </Container>
     )
 }
  
