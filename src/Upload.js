@@ -35,7 +35,7 @@ function Upload() {
                         poster: "TBD",
                         location: "HI",
                         timstamp: "TBD",
-                        likes: "0",
+                        likes: post.likes,
                         comments: []
                     });
                 });

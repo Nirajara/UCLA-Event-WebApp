@@ -24,8 +24,9 @@ const Post = () => {
     const [post, setPost] = useState({
         caption: "",
         tags: [],
-        likes: 4,
-	    tagString: ""
+        likes: 0,
+	    tagString: "",
+        changed: false
     });
     const [posts, setPosts] = useState([]);
 
@@ -143,12 +144,18 @@ const Post = () => {
     }
 
     const navigate = useNavigate();
-
+    console.log(posts);
     function handleClick(i) {
-        post[i].likes++;
-      };
+        setPost({
+            ...posts[i],
+            likes: posts[i].likes++,
+    
+        });
+        console.log("HI")
+    }
  
     return (
+        
         <Container className="output-section">
             <Card className="transition-feature">
                 <Card.Text>Navigate to the tentative user page</Card.Text>
@@ -156,23 +163,26 @@ const Post = () => {
             </Card>
 
             {posts?.map((post,i)=>(
+            
             <Card className="post">
-                <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button>
+                <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
                 <Card.Img className="img-container" src={post.image} />
                 <Card.Text classname="post-info">
                     
-                    <p key={i}>Poster: {post.poster}</p>
-                    <p key={i}>Caption: {post.caption}</p>
-                    <p key={i}>Tags: {post.tagString}</p>
-                    <p key={i}>Likes: {post.likes}</p>
+                    <p key={i}>Poster: {posts[i].poster}</p>
+                    <p key={i}>Caption: {posts[i].caption}</p>
+                    <p key={i}>Tags: {posts[i].tagString}</p>
+                    <p key={i}>Likes: {posts[i].likes}</p>
 
                 </Card.Text>
             </Card>
-            
 
             ))}
+         
         </Container>
+        
     )
+
 }
  
 export default Post
