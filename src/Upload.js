@@ -14,7 +14,8 @@ function Upload() {
     const [post, setPost] = useState({
         caption: "",
         tags: [],
-	tagString: ""
+        likes: 0,
+	    tagString: ""
     });
     const [posts, setPosts] = useState([]);
 
@@ -32,9 +33,9 @@ function Upload() {
                         tags: post.tags,
 			tagString: post.tagString,
                         poster: "TBD",
-                        location: "TBD",
+                        location: "HI",
                         timstamp: "TBD",
-                        likes: [],
+                        likes: "0",
                         comments: []
                     });
                 });

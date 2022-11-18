@@ -4,7 +4,8 @@ import Post from './Post';
 import Upload from './Upload';
 import User from './User';
 import Navbar from './Navbar';
-import SignIn from './SignIn'
+import SignIn from './SignIn';
+import comment from './comments';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import Container from 'react-bootstrap/Container'
 import Row from "react-bootstrap/Row"
@@ -20,6 +21,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 
 function App() {
   return (
+
     <Router>
       <div className="App">
         <Container fluid>

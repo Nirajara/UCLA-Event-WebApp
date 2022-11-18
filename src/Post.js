@@ -5,9 +5,10 @@ import { collection, addDoc, getDocs, getDoc, doc, updateDoc } from "firebase/fi
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Link, useNavigate } from 'react-router-dom';
-import Button from "react-bootstrap/Button"
-import Card from "react-bootstrap/Card"
-import Container from "react-bootstrap/Container"
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import Container from "react-bootstrap/Container";
+import ListGroup from 'react-bootstrap/ListGroup';
 import "bootstrap/dist/css/bootstrap.min.css"
 
 const Post = () => {
@@ -23,7 +24,8 @@ const Post = () => {
     const [post, setPost] = useState({
         caption: "",
         tags: [],
-	tagString: ""
+        likes: 4,
+	    tagString: ""
     });
     const [posts, setPosts] = useState([]);
 
@@ -39,11 +41,11 @@ const Post = () => {
                         image: url,
                         caption: post.caption,
                         tags: post.tags,
-			tagString: post.tagString,
+			            tagString: post.tagString,
                         poster: user_doc.data().name,
                         location: "TBD",
                         timstamp: "TBD",
-                        likes: [],
+                        likes: post.likes,
                         comments: []
                     }).then(docRef => {
                         const posts = user_doc.data().posts;
@@ -141,6 +143,10 @@ const Post = () => {
     }
 
     const navigate = useNavigate();
+
+    function handleClick(i) {
+        post[i].likes++;
+      };
  
     return (
         <Container className="output-section">
@@ -148,16 +154,23 @@ const Post = () => {
                 <Card.Text>Navigate to the tentative user page</Card.Text>
                 <Button variant="outline-warning" onClick={() => navigate("/user", { state: { id: "AJpPuzeERGPp9nkVhpoWRDBEkFE2"} })}>To User Page</Button>
             </Card>
+
             {posts?.map((post,i)=>(
             <Card className="post">
+                <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button>
                 <Card.Img className="img-container" src={post.image} />
                 <Card.Text classname="post-info">
+                    
                     <p key={i}>Poster: {post.poster}</p>
                     <p key={i}>Caption: {post.caption}</p>
                     <p key={i}>Tags: {post.tagString}</p>
+                    <p key={i}>Likes: {post.likes}</p>
+
                 </Card.Text>
             </Card>
-        ))}
+            
+
+            ))}
         </Container>
     )
 }
