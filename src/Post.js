@@ -165,14 +165,15 @@ const Post = () => {
             {posts?.map((post,i)=>(
             
             <Card className="post">
-                <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
+                <Card className="Likes">
+                </Card>
                 <Card.Img className="img-container" src={post.image} />
                 <Card.Text classname="post-info">
                     
                     <p key={i}>Poster: {posts[i].poster}</p>
                     <p key={i}>Caption: {posts[i].caption}</p>
                     <p key={i}>Tags: {posts[i].tagString}</p>
-                    <p key={i}>Likes: {posts[i].likes}</p>
+                    <p key={i}>Likes: {posts[i].likes}<Button variant = "outline" onClick = {() => handleClick(i)}>🔥</Button> </p>
 
                 </Card.Text>
             </Card>
