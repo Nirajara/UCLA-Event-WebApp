@@ -1,17 +1,18 @@
 import React from 'react'
-import './Navbar.css'
+import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 
-const comment = () => {
+const Comment = () => {
+    var uid: "";
+    var comment: "";
+    
     return(
-        <div>
-            Comments
+        <div className="temp">
+	    TEST TEST
         </div>
     );
 
 };
 
-
-
-export default comment;
+export default Comment;
