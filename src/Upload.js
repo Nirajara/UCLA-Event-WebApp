@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, doc, addDoc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence, signInWithEmailAndPassword } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import Button from "react-bootstrap/Button";
 
 function Upload() {
 
@@ -162,7 +163,7 @@ function Upload() {
                             <label for="vehicle3">Alert</label>
                         </div>
                         <div className="input-wrapper">
-                            <button type="submit" className="btn" onClick={addPost}>Submit post</button>
+                            <Button variant="outline-warning" onClick={addPost}>Submit post</Button>
                         </div>
                     </div>
                 </form>
