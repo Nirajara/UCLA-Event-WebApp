@@ -29,9 +29,10 @@ const Post = () => {
     })
     const [imageUpload, setImage] = useState();
     const [post, setPost] = useState({
+        id: "",
         caption: "",
         tags: [],
-        likes: 0,
+        likes: [],
 	    tagString: "",
         changed: false
     });
@@ -161,10 +162,19 @@ const Post = () => {
 
     const navigate = useNavigate();
     console.log(posts);
+    
     function handleClick(i) {
+        const likes = posts[i].likes;
+        console.log(likes);
+        if (!likes.includes(userData.uid)) {
+            likes.push(userData.uid)
+        }
+        updateDoc(doc(db, "posts", posts[i].id), {
+            likes: likes
+        });
         setPost({
             ...posts[i],
-            likes: posts[i].likes++,
+            likes: likes,
     
         });
         console.log("HI")
@@ -187,7 +197,7 @@ const Post = () => {
                     <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
                     <p key={i}>Caption: {posts[i].caption}</p>
                     <p key={i}>Tags: {posts[i].tagString}</p>
-                    <p key={i}>Likes: {posts[i].likes}</p>
+                    <p key={i}>Likes: {posts[i].likes.length}</p>
 
                 </Card.Text>
             </Card>
