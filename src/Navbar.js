@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import './Navbar.css'
+import './App.css'
 import Container from 'react-bootstrap/Container'
 import Button from "react-bootstrap/Button"
 import ButtonGroup from 'react-bootstrap/ButtonGroup';

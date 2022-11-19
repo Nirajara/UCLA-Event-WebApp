@@ -92,3 +92,10 @@ code {
   margin-right: auto;
   border-radius: 1em;
 }
+
+.card.banner {
+    border-radius: 1em;
+    border: 2px solid #206bc8;
+    padding: 10px;
+    background-color: #b7d4ff;
+}
