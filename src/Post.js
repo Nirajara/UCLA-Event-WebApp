@@ -6,7 +6,15 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Link, useNavigate } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
+import {
+    MDBCard,
+    MDBCardTitle,
+    MDBCardText,
+    MDBCardBody,
+    MDBCardImage,
+    MDBRow,
+    MDBCol
+} from 'mdb-react-ui-kit';
 import Container from "react-bootstrap/Container";
 import ListGroup from 'react-bootstrap/ListGroup';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -183,24 +191,32 @@ const Post = () => {
     return (
         
         <Container className="output-section">
-            <Card className="transition-feature">
-                <Card.Text>Welcome back, {userData.name}!</Card.Text>
-            </Card>
+            <MDBCard className="transition-feature">
+                <MDBCardText>Welcome back, {userData.name}!</MDBCardText>
+            </MDBCard>
 
+	    <br/>
+	
             {posts?.map((post,i)=>(
-            
-            <Card className="post">
-                <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
-                <Card.Img className="img-container" src={post.image} />
-                <Card.Text classname="post-info">
-                    
-                    <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
-                    <p key={i}>Caption: {posts[i].caption}</p>
-                    <p key={i}>Tags: {posts[i].tagString}</p>
-                    <p key={i}>Likes: {posts[i].likes.length}</p>
 
-                </Card.Text>
-            </Card>
+            <MDBCard className="post">
+   		<MDBRow className='g-0'>
+		    <MDBCol md="6">
+        	    <MDBCardTitle key={i}>{posts[i].caption}</MDBCardTitle>
+                    <MDBCardImage className="img-container" src={post.image} fluid />
+                    <MDBCardText classname="post-info">
+		        <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>{posts[i].poster}</p>
+    		        <p key={i}>Tags: {posts[i].tagString}</p>
+       		        <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like {posts[i].likes}</Button> 
+                    </MDBCardText>
+                    </MDBCol>
+		    <MDBCol md="6">
+		    <MDBCardText classname="post-info">
+		    <p> COMMENT PLACEHOLDER {posts[i].comments} </p>
+		    </MDBCardText>
+		    </MDBCol>
+		</MDBRow>
+            </MDBCard>
 
             ))}
          

@@ -9,6 +9,7 @@
     "bootstrap": "^5.2.2",
     "firebase": "^9.13.0",
     "firebaseui": "^6.0.1",
+    "mdb-react-ui-kit": "^5.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
     "react-dom": "^18.2.0",
