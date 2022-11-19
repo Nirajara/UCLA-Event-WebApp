@@ -9,14 +9,21 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import ListGroup from 'react-bootstrap/ListGroup';
-import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useLocation } from 'react-router-dom';
 
 const Post = () => {
     // Initialize firebase storage for images
     const storage = getStorage();
     const auth = getAuth();
+    const location = useLocation();
 
     // Initializing state variables to store image and other post data
+    const [userData, setUserData] = useState({
+        name: "",
+        uid: ""
+    });
+
     const [state, setState] = useState({
         user: ""
     })
@@ -35,7 +42,6 @@ const Post = () => {
         e.preventDefault();  
         try {
             const storageRef = ref(storage, imageUpload.name);
-            const user_doc = await getDoc(doc(db, "users", state.user));
             await uploadBytes(storageRef, imageUpload).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then( url => {
                     addDoc(collection(db, "posts"), {
@@ -43,15 +49,15 @@ const Post = () => {
                         caption: post.caption,
                         tags: post.tags,
 			            tagString: post.tagString,
-                        poster: user_doc.data().name,
+                        poster: userData.name,
                         location: "TBD",
                         timstamp: "TBD",
                         likes: post.likes,
                         comments: []
                     }).then(docRef => {
-                        const posts = user_doc.data().posts;
+                        const posts = userData.posts;
                         posts.push(docRef.id)
-                        updateDoc(doc(db, "users", state.user), {
+                        updateDoc(doc(db, "users", userData.uid), {
                             posts: posts
                         });
                         forceUpdate();
@@ -79,11 +85,21 @@ const Post = () => {
     // This is triggered upon re-rendering
     useEffect(()=>{
         onAuthStateChanged(auth, (user) => {
-            if (user) { 
-                setState({
-                    user: user.uid
-                })
+            if (user) {
+                console.log("SUCCESS");
+                getDoc(doc(db, "users", user.uid)).then(user_doc => {
+                    const data = user_doc.data();
+                    setUserData({
+                        uid: user.uid,
+                        name: data.name,
+                        posts: data.posts
+                    });
+                });
+            } 
+            /*else {
+                navigate('/SignIn');
             }
+            */
         });
         fetchPost();
     }, [])
@@ -158,8 +174,7 @@ const Post = () => {
         
         <Container className="output-section">
             <Card className="transition-feature">
-                <Card.Text>Navigate to the tentative user page</Card.Text>
-                <Button variant="outline-warning" onClick={() => navigate("/user", { state: { id: "AJpPuzeERGPp9nkVhpoWRDBEkFE2"} })}>To User Page</Button>
+                <Card.Text>Welcome back, {userData.name}!</Card.Text>
             </Card>
 
             {posts?.map((post,i)=>(
@@ -169,7 +184,7 @@ const Post = () => {
                 <Card.Img className="img-container" src={post.image} />
                 <Card.Text classname="post-info">
                     
-                    <p key={i}>Poster: {posts[i].poster}</p>
+                    <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
                     <p key={i}>Caption: {posts[i].caption}</p>
                     <p key={i}>Tags: {posts[i].tagString}</p>
                     <p key={i}>Likes: {posts[i].likes}</p>

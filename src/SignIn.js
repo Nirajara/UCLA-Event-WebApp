@@ -4,12 +4,18 @@ import React, { useState, useEffect } from 'react';
 import { collection, doc, addDoc, setDoc, getDocs } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence, signInWithEmailAndPassword } from "firebase/auth";
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import Container from "react-bootstrap/Container";
+import ListGroup from 'react-bootstrap/ListGroup';
+import "bootstrap/dist/css/bootstrap.min.css"
 
 const SignIn = () => {
     // Initialize firebase storage for images
     const storage = getStorage();
     const auth = getAuth();
+    const navigate = useNavigate();
     //const history = useNavigate();
 
     const [status, setStatus] = useState({
@@ -46,6 +52,7 @@ const SignIn = () => {
                 console.log(error)
                 // ..
         });
+        navigate("/post");
     }
 
     function handleLogin(evt) {
@@ -93,7 +100,7 @@ const SignIn = () => {
                             <input type="text" placeholder="Enter password" name="password" value={input.password} onChange={handleLogin}/>
                         </div>
                         <div className="input-wrapper">
-                            <button type="submit" className="btn" onClick={addAccount}>Sign up</button>
+                            <Button variant="outline-warning" onClick={addAccount}>Sign up</Button>
                         </div>
                     </div>
                 </form>

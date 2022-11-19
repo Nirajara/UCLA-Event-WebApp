@@ -1,20 +1,28 @@
 import "./App.css";
 import {db} from './firebase'
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, doc, addDoc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence, signInWithEmailAndPassword } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 function Upload() {
 
     // Initialize firebase storage for images
     const storage = getStorage();
+    const auth = getAuth();
+    const uid = "";
 
     // Initializing state variables to store image and other post data
+    const [userData, setUserData] = useState({
+        name: "",
+        uid: "",
+        posts: []
+    });
     const [imageUpload, setImage] = useState();
     const [post, setPost] = useState({
         caption: "",
         tags: [],
-        likes: 0,
+        likes: [],
 	    tagString: ""
     });
     const [posts, setPosts] = useState([]);
@@ -22,6 +30,7 @@ function Upload() {
     // addPost takes in the image state data and the submitted tags/captions and uploads all the data to firebase
     const addPost = async (e) => {
         e.preventDefault();  
+        console.log("UID:", userData.uid);
         try {
             const storageRef = ref(storage, imageUpload.name);
             await uploadBytes(storageRef, imageUpload).then((snapshot) => {
@@ -31,12 +40,19 @@ function Upload() {
                         image: url,
                         caption: post.caption,
                         tags: post.tags,
-			tagString: post.tagString,
-                        poster: "TBD",
+			            tagString: post.tagString,
+                        poster: userData.name,
+                        posterID: userData.uid,
                         location: "HI",
                         timstamp: "TBD",
                         likes: post.likes,
                         comments: []
+                    }).then(docRef => {
+                        const posts = userData.posts;
+                        posts.push(docRef.id)
+                        updateDoc(doc(db, "users", userData.uid), {
+                            posts: posts
+                        });
                     });
                 });
               });
@@ -56,8 +72,18 @@ function Upload() {
    
     // This is triggered upon re-rendering
     useEffect(()=>{
-        fetchPost();
-    }, [])
+        onAuthStateChanged(auth, (user) => {
+            getDoc(doc(db, "users", user.uid)).then(user_doc => {
+                const data = user_doc.data();
+                setUserData({
+                    uid: user.uid,
+                    name: data.name,
+                    posts: data.posts
+                });
+            });
+        });    
+    }, 
+    [])
 
     function tagsToString(tags) {
 	var tagString;

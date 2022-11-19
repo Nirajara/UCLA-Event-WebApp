@@ -26,7 +26,6 @@ const Navbar = () => {
 				<Button variant="warning" onClick={() => handleClick("post")}>Home</Button>
 				<Button variant="primary" onClick={() => handleClick("signin")}>Login</Button>
 				<Button variant="warning" onClick={() => handleClick("upload")}>Post</Button>
-				<Button variant="primary" onClick={() => navigate("user", { state: { id: "AJpPuzeERGPp9nkVhpoWRDBEkFE2"} })}>User (tentative)</Button>
 			</ButtonGroup>
 		</Card>
     );
