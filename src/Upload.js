@@ -1,10 +1,11 @@
 import "./App.css";
 import {db} from './firebase'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { collection, doc, addDoc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence, signInWithEmailAndPassword } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Button from "react-bootstrap/Button";
+import Overlay from 'react-bootstrap/Overlay';
 
 function Upload() {
 
@@ -27,6 +28,9 @@ function Upload() {
 	    tagString: ""
     });
     const [posts, setPosts] = useState([]);
+
+    const [show, setShow] = useState(false);
+    const target = useRef(null);
 
     // addPost takes in the image state data and the submitted tags/captions and uploads all the data to firebase
     const addPost = async (e) => {
@@ -57,6 +61,7 @@ function Upload() {
                     });
                 });
               });
+              setShow(!show);
           } catch (e) {
             console.error("Error adding post: ", e);
           }
@@ -141,6 +146,8 @@ function Upload() {
         }
     }
 
+    
+
     return (
         <div className="Upload">
                 <form>
@@ -163,7 +170,24 @@ function Upload() {
                             <label for="vehicle3">Alert</label>
                         </div>
                         <div className="input-wrapper">
-                            <Button variant="outline-warning" onClick={addPost}>Submit post</Button>
+                            <Button variant="outline-warning" ref={target} onClick={addPost}>Submit post</Button>
+                            <Overlay target={target.current} show={show} placement="right">
+                                {({ placement, arrowProps, show: _show, popper, ...props }) => (
+                                <div
+                                    {...props}
+                                    style={{
+                                    position: 'absolute',
+                                    backgroundColor: 'rgba(32, 107, 200, 0.85)',
+                                    padding: '2px 10px',
+                                    color: 'gold',
+                                    borderRadius: 3,
+                                    ...props.style,
+                                    }}
+                                >
+                                    Posted Successfully!
+                                </div>
+                                )}
+                            </Overlay>
                         </div>
                     </div>
                 </form>
