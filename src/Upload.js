@@ -1,11 +1,15 @@
 import "./App.css";
 import {db} from './firebase'
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { collection, doc, addDoc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence, signInWithEmailAndPassword } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Button from "react-bootstrap/Button";
 import Overlay from 'react-bootstrap/Overlay';
+import Container from 'react-bootstrap/Container';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
 
 function Upload() {
 
@@ -146,7 +150,21 @@ function Upload() {
         }
     }
 
-    
+    const navigate = useNavigate();
+ 	function handleClick(path) {
+    	navigate(path);
+ 	}
+
+    if (userData.uid == "") {
+        return (
+            <Container className="output-section">
+                    <Card className="post" >
+                        <Card.Title>You must be signed in to post</Card.Title>
+                        <Button variant="warning" onClick={() => handleClick("/signin")}>Sign In</Button>
+                    </Card>
+            </Container>
+        )
+    } else {
 
     return (
         <div className="Upload">
@@ -193,6 +211,8 @@ function Upload() {
                 </form>
             </div>
     )
+}
+
 }
 
 export default Upload

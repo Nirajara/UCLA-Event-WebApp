@@ -164,6 +164,7 @@ const Post = () => {
     console.log(posts);
     
     function handleClick(i) {
+        if (userData.uid != "") {
         const likes = posts[i].likes;
         console.log(likes);
         if (!likes.includes(userData.uid)) {
@@ -178,7 +179,41 @@ const Post = () => {
     
         });
         console.log("HI")
+        } else {
+            console.log("Gotta sign in first bud")
+        }
     }
+
+    function handleNav(path) {
+       navigate(path);
+    }
+
+    if(userData.uid == "") {
+        return (
+            <Container className="output-section">
+                <Card className="transition-feature">
+                    <Button variant="warning" onClick={() => handleNav("/signin")}>Click here to sign in</Button>    
+                </Card>
+
+                {posts?.map((post,i)=>(
+            
+            <Card className="post">
+                <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
+                <Card.Img className="img-container" src={post.image} />
+                <Card.Text classname="post-info">
+                    
+                    <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
+                    <p key={i}>Caption: {posts[i].caption}</p>
+                    <p key={i}>Tags: {posts[i].tagString}</p>
+                    <p key={i}>Likes: {posts[i].likes.length}</p>
+
+                </Card.Text>
+            </Card>
+
+            ))}
+            </Container>
+        )
+    } else {
  
     return (
         
@@ -207,6 +242,7 @@ const Post = () => {
         </Container>
         
     )
+    }
 
 }
  
