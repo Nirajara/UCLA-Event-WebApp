@@ -25,8 +25,6 @@ function App() {
     <Router>
       <div className="App">
         <Container fluid>
-
-          <Row>
               <Col xs={2} className="fixed-top">
                 <Navbar />
               </Col>
@@ -41,7 +39,6 @@ function App() {
                 </Routes>
               </div>
             </Col>
-          </Row>
         </Container>
       </div>
     </Router>
