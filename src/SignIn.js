@@ -54,11 +54,6 @@ const SignIn = () => {
         navigate("/post");
     }
 
-    function signIn() {
-        signInWithEmailAndPassword(auth, input.email, input.password);
-        navigate("/post")
-    }
-
     function handleLogin(evt) {
         setInput({
             ...input,
@@ -104,8 +99,7 @@ const SignIn = () => {
                             <input type="text" placeholder="Enter password" name="password" value={input.password} onChange={handleLogin}/>
                         </div>
                         <div className="input-wrapper">
-                            <Button class="btn btn-outline-warning mr-1" onClick={addAccount}>Sign Up</Button>
-                            <Button class="btn btn-outline-warning" onClick={signIn}>Sign In</Button>
+                            <Button variant="outline-warning" onClick={addAccount}>Sign up</Button>
                         </div>
                     </div>
                 </form>
