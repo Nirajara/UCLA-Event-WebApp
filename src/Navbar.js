@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import './App.css'
 import {db} from './firebase'
 import { getDoc, doc } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import Button from "react-bootstrap/Button"
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Card from "react-bootstrap/Card"
@@ -20,20 +20,39 @@ const Navbar = () => {
         name: "",
         uid: "",
     })
+	const [status, setStatus] = useState({
+        status: "signed out"
+    })
 
 	
 
 	useEffect(()=>{
         onAuthStateChanged(auth, (user) => {
-            getDoc(doc(db, "users", user.uid)).then(user_doc => {
-                const data = user_doc.data();
-                setUser({
-                    uid: user.uid,
-                    name: data.name,
-                });
-            });
-        });
-    });
+            if (user) {
+              setUser({
+				name: user.name,
+				uid: user.uid
+			  })
+              setStatus({
+                status: "signed in"
+              });
+              // ...
+            } else {
+              setUser({
+				name: "",
+				uid: ""
+			  })
+              setStatus({
+                status: "signed out"
+              });
+            }
+          });
+    }, [])
+
+	function logOut() {
+		signOut(auth);
+		navigate("/signin");
+	}
 
 	const navigate = useNavigate();
  	function handleClick(path) {
@@ -64,7 +83,7 @@ const Navbar = () => {
 				<Button variant="primary" onClick={() => navigate("/user", { state: { id: user.uid} })}>Your Profile</Button>
 				<Button variant="warning" onClick={() => handleClick("upload")}>Post</Button>
 			</ButtonGroup>
-			<Button variant="outline-primary">Log Out</Button>
+			<Button variant="outline-primary" onClick={() => logOut()}>Log Out</Button>
 		</Card>
     );
 
