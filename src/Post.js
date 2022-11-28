@@ -21,7 +21,8 @@ const Post = () => {
     // Initializing state variables to store image and other post data
     const [userData, setUserData] = useState({
         name: "",
-        uid: ""
+        uid: "",
+        Activity: 0
     });
 
     const [state, setState] = useState({
@@ -54,12 +55,15 @@ const Post = () => {
                         location: "TBD",
                         timstamp: "TBD",
                         likes: post.likes,
+                        Activity: userData.Activity,
                         comments: []
                     }).then(docRef => {
                         const posts = userData.posts;
+                        const Activity = userData.Activity;
                         posts.push(docRef.id)
                         updateDoc(doc(db, "users", userData.uid), {
-                            posts: posts
+                            posts: posts,
+                            Activity: Activity
                         });
                         forceUpdate();
                     });
@@ -179,7 +183,13 @@ const Post = () => {
     
         });
         console.log("HI")
-        } else {
+        setUserData({
+            Activity: userData.Activity + 1,
+    
+        });
+        
+        } 
+        else {
             console.log("Gotta sign in first bud")
         }
     }
@@ -188,7 +198,7 @@ const Post = () => {
        navigate(path);
     }
 
-    if(userData.uid == "") {
+    if(userData.uid === "") {
         return (
             <Container className="output-section">
                 <Card className="transition-feature">

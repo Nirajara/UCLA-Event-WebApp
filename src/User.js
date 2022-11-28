@@ -16,10 +16,12 @@ const User = () => {
     const [state, setState] = useState({
         name: "",
         bio: "",
+        Activity: 0
     })
     const [posts, setPosts] = useState({
         posts: []
     })
+
 
     const fetchUser = async() => {
         getDoc(doc(db, "users", location.state.id)).then(user => {
@@ -27,15 +29,20 @@ const User = () => {
             setState({
                 name: data.name,
                 bio: data.bio,
+                Activity: data.Activity
             })
             getDocs(collection(db, "posts")).then((querySnapshot) => {
                 querySnapshot.forEach((post) => {
                     if (data.posts.includes(post.id)) {
                         getDoc(doc(db, "posts", post.id)).then(user_post => {
                             const currPosts = posts.posts;
+                            const Activity = state.Activity;
                             currPosts.push(user_post.data())
                             setPosts({
                                 posts: currPosts,
+                            })
+                            setState({
+                                Activity: Activity,
                             })
                         })
                     }
@@ -55,6 +62,7 @@ const User = () => {
             <div className="user-card">
                 <p>Name: {state.name}</p>
                 <p>Bio: {state.bio}</p>
+                <p>Trophies 🏆: {state.Activity}</p>
             </div>
             {posts.posts?.map((post,i)=>(
             <div className="post">
