@@ -16,6 +16,7 @@ const User = () => {
     const [state, setState] = useState({
         name: "",
         bio: "",
+
     })
     const [posts, setPosts] = useState({
         posts: []
@@ -43,19 +44,24 @@ const User = () => {
             })
         })
     }
-    console.log(posts.posts);
-   
+
+  
     // This is triggered upon re-rendering
     useEffect(()=>{
         fetchUser();
     }, [])
+    
 
     return (
+    
         <div className="output-section">
             <div className="user-card">
                 <p>Name: {state.name}</p>
                 <p>Bio: {state.bio}</p>
+                <p>Trophies 🏆: {posts.posts.length}</p>
+               
             </div>
+            
             {posts.posts?.map((post,i)=>(
             <div className="post">
                 <div className="img-container">

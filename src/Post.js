@@ -21,7 +21,8 @@ const Post = () => {
     // Initializing state variables to store image and other post data
     const [userData, setUserData] = useState({
         name: "",
-        uid: ""
+        uid: "",
+        posts: []
     });
 
     const [state, setState] = useState({
@@ -178,6 +179,7 @@ const Post = () => {
             likes: likes,
     
         });
+
         console.log("HI")
         } else {
             console.log("Gotta sign in first bud")
@@ -220,6 +222,7 @@ const Post = () => {
         <Container className="output-section">
             <Card className="transition-feature">
                 <Card.Text>Welcome back, {userData.name}!</Card.Text>
+                
             </Card>
 
             {posts?.map((post,i)=>(
