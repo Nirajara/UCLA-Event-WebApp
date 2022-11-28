@@ -22,7 +22,6 @@ function Upload() {
     const [userData, setUserData] = useState({
         name: "",
         uid: "",
-        Activity: 0,
         posts: []
     });
     const [imageUpload, setImage] = useState();
@@ -41,10 +40,6 @@ function Upload() {
     const addPost = async (e) => {
         e.preventDefault();  
         console.log("UID:", userData.uid);
-        const Activity = userData.Activity
-        setUserData({
-            Activity: Activity + 1,
-        })
         try {
             const storageRef = ref(storage, imageUpload.name);
             await uploadBytes(storageRef, imageUpload).then((snapshot) => {
@@ -60,15 +55,12 @@ function Upload() {
                         location: "HI",
                         timstamp: "TBD",
                         likes: post.likes,
-                        comments: [],
-                        Activity: userData.Activity
+                        comments: []
                     }).then(docRef => {
                         const posts = userData.posts;
-                        const Activity = userData.Activity;
                         posts.push(docRef.id)
                         updateDoc(doc(db, "users", userData.uid), {
-                            posts: posts,
-                            Activity: Activity
+                            posts: posts
                         });
                     });
                 });
@@ -96,8 +88,7 @@ function Upload() {
                 setUserData({
                     uid: user.uid,
                     name: data.name,
-                    posts: data.posts,
-                    Activity: data.Activity
+                    posts: data.posts
                 });
             });
         });    
@@ -164,7 +155,7 @@ function Upload() {
     	navigate(path);
  	}
 
-    if (userData.uid === "") {
+    if (userData.uid == "") {
         return (
             <Container className="output-section">
                     <Card className="post" >
