@@ -71,6 +71,8 @@ const User = () => {
                     <p key={i}>Poster: {post.poster}</p>
                     <p key={i}>Caption: {post.caption}</p>
                     <p key={i}>Tags: {post.tagString}</p>
+                    <p key={i}>Location: {post.location}</p>
+                    <p key={i}>Likes: {post.likes.length}</p>
                 </div>
             </div>
             ))}

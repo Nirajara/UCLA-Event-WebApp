@@ -35,7 +35,7 @@ const Post = () => {
         tags: [],
         likes: [],
 	    tagString: "",
-        changed: false
+        location: "" 
     });
     const [posts, setPosts] = useState([]);
 
@@ -52,7 +52,7 @@ const Post = () => {
                         tags: post.tags,
 			            tagString: post.tagString,
                         poster: userData.name,
-                        location: "TBD",
+                        location: post.location,
                         timstamp: "TBD",
                         likes: post.likes,
                         comments: []
@@ -208,6 +208,7 @@ const Post = () => {
                     <p key={i}>Caption: {posts[i].caption}</p>
                     <p key={i}>Tags: {posts[i].tagString}</p>
                     <p key={i}>Likes: {posts[i].likes.length}</p>
+                    <p key={i}>Location: {posts[i].location}</p>
 
                 </Card.Text>
             </Card>
@@ -235,7 +236,9 @@ const Post = () => {
                     <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
                     <p key={i}>Caption: {posts[i].caption}</p>
                     <p key={i}>Tags: {posts[i].tagString}</p>
+                    <p key={i}>Location: {posts[i].location}</p>
                     <p key={i}>Likes: {posts[i].likes.length}</p>
+
 
                 </Card.Text>
             </Card>
