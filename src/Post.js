@@ -11,6 +11,8 @@ import Container from "react-bootstrap/Container";
 import ListGroup from 'react-bootstrap/ListGroup';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useLocation } from 'react-router-dom';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 const Post = () => {
     // Initialize firebase storage for images
@@ -223,7 +225,11 @@ const Post = () => {
         <Container className="output-section">
             <Card className="transition-feature">
                 <Card.Text>Welcome back, {userData.name}!</Card.Text>
-                
+                <DropdownButton id="dropdown-basic-button" title="Filter by:" size = "small">
+                    <Dropdown.Item href="#/action-1">Club</Dropdown.Item>
+                    <Dropdown.Item href="#/action-2">Gathering</Dropdown.Item>
+                    <Dropdown.Item href="#/action-3">Alert</Dropdown.Item>
+                </DropdownButton>
             </Card>
 
             {posts?.map((post,i)=>(

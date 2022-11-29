@@ -28,10 +28,10 @@ const SignIn = () => {
     });
 
     setPersistence(auth, browserLocalPersistence);
-
+    
     function addAccount(evt) {
-    if(input.email.includes("@g.ucla.edu") || input.email.includes("@ucla.edu") )
-    {
+        if( (input.email.includes("@g.ucla.edu") || input.email.includes("@ucla.edu")) && (input.password.length > 6) && !(input.email.includes(" ")))
+        {
         evt.preventDefault();  
         createUserWithEmailAndPassword(auth, input.email, input.password)
             .then((userCredential) => {
@@ -54,8 +54,15 @@ const SignIn = () => {
                 // ..
         });
         navigate("/post");
+        alert("Succesful Sign up")
+        }
+        else
+        {
+        alert("Make sure password is at least 6 characters long, email is your UCLA email, and email contains no spaces")
+        }
+        
     }
-    }
+   
 
     function signIn() {
         signInWithEmailAndPassword(auth, input.email, input.password);
