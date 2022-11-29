@@ -24,7 +24,8 @@ const SignIn = () => {
     const [input, setInput] = useState({
         name: "",
         email: "",
-        password: ""
+        password: "",
+        bio: ""
     });
 
     setPersistence(auth, browserLocalPersistence);
@@ -42,7 +43,7 @@ const SignIn = () => {
                     setDoc(doc(db, "users", uid), {
                         name: input.name,
                         email: input.email,
-                        bio: "",
+                        bio: input.bio,
                         posts: []
                     });
                 });
@@ -58,7 +59,7 @@ const SignIn = () => {
         }
         else
         {
-        alert("Make sure password is at least 6 characters long, email is your UCLA email, and email contains no spaces")
+        alert("Make sure password is longer than 6 characters, email is your UCLA email, and email contains no spaces")
         }
         
     }
@@ -113,6 +114,10 @@ const SignIn = () => {
                         <div className="input-wrapper">
                             <h2 className="input-title">Password</h2>
                             <input type="text" placeholder="Enter password" name="password" value={input.password} onChange={handleLogin}/>
+                        </div>
+                        <div className="input-wrapper">
+                            <h2 className="input-title">Bio</h2>
+                            <input type="text" placeholder="Create Bio" name="bio" value={input.bio} onChange={handleLogin}/>
                         </div>
                         <div className="input-wrapper">
                             <Button class="btn btn-outline-warning mr-1" onClick={addAccount}>Sign Up</Button>
