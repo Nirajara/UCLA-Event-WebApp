@@ -30,6 +30,8 @@ const SignIn = () => {
     setPersistence(auth, browserLocalPersistence);
 
     function addAccount(evt) {
+    if(input.email.includes("@g.ucla.edu") || input.email.includes("@ucla.edu") )
+    {
         evt.preventDefault();  
         createUserWithEmailAndPassword(auth, input.email, input.password)
             .then((userCredential) => {
@@ -53,6 +55,7 @@ const SignIn = () => {
         });
         navigate("/post");
     }
+    }
 
     function signIn() {
         signInWithEmailAndPassword(auth, input.email, input.password);
@@ -65,6 +68,7 @@ const SignIn = () => {
             [evt.target.name]: evt.target.value
         })
     }
+    
 
     useEffect(()=>{
         onAuthStateChanged(auth, (user) => {
