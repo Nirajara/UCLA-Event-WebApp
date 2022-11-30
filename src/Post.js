@@ -169,7 +169,7 @@ const Post = () => {
     
     
     function handleClick(i) {
-        if (userData.uid != "") {
+        if (userData.uid !== "") {
         const likes = posts[i].likes;
         console.log(likes);
         if (!likes.includes(userData.uid)) {
@@ -217,7 +217,7 @@ function selectPosts(tag)
     }
 
     
-    if(userData.uid == "") {
+    if(userData.uid === "") {
         return (
             <Container className="output-section">
                 <Card className="transition-feature">
@@ -266,11 +266,11 @@ function selectPosts(tag)
                 <Card.Text classname="post-info">
                     
                     <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
-                    <p key={i}>Caption: {posts[i].caption}</p>
-                    <p key={i}>Tags: {posts[i].tagString}</p>
+                    <p key={i}>Caption: {selected_posts[i].caption}</p>
+                    <p key={i}>Tags: {selected_posts[i].tagString}</p>
                     <p key={i}>Location: {selected_posts[i].location}</p>
-                    <p key={i}>Posted on: {posts[i].timestamp}</p>
-                    <p key={i}>Likes: {posts[i].likes.length}</p>
+                    <p key={i}>Posted on: {selected_posts[i].timestamp}</p>
+                    <p key={i}>Likes: {selected_posts[i].likes.length}</p>
 
                 </Card.Text>
             </Card>
