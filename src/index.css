@@ -26,16 +26,23 @@ code {
 
 }
 
-.comment-section {
-  
+.comment {
+    border-radius: .5em;
+    border: 1px solid #f0b401;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    min-height: 30px;
+    margin: 5px;
+    background: rgba(0, 28, 69, 0.85);
 }
 
-.comment {
+.comment-section {
   display: block;
-    width: 98%;
-    height: 65vh;
-    float: center right;
-    margin: auto;
+  width: 98%;
+  height: 65vh;
+  float: center right;
+  margin: auto;
   position: relative;
 }
 
