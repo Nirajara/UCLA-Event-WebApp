@@ -21,6 +21,8 @@ import Container from "react-bootstrap/Container";
 import ListGroup from 'react-bootstrap/ListGroup';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useLocation } from 'react-router-dom';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 const Post = () => {
     // Initialize firebase storage for images
@@ -31,7 +33,8 @@ const Post = () => {
     // Initializing state variables to store image and other post data
     const [userData, setUserData] = useState({
         name: "",
-        uid: ""
+        uid: "",
+        posts: []
     });
 
     const [state, setState] = useState({
@@ -45,9 +48,10 @@ const Post = () => {
         likes: [],
 	comments: [],
 	tagString: "",
-        changed: false
+        location: "" 
     });
     const [posts, setPosts] = useState([]);
+    const [selected_posts, setSelectedPosts] = useState([]);
 
     // addPost takes in the image state data and the submitted tags/captions and uploads all the data to firebase
     const addPost = async (e) => {
@@ -62,8 +66,8 @@ const Post = () => {
                         tags: post.tags,
 			tagString: post.tagString,
                         poster: userData.name,
-                        location: "TBD",
-                        timstamp: "TBD",
+                        location: post.location,
+                        timestamp: post.timestamp,
                         likes: post.likes,
                         comments: post.comments
                     }).then(docRef => {
@@ -90,10 +94,10 @@ const Post = () => {
         await getDocs(collection(db, "posts"))
             .then((querySnapshot)=>{              
                 const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
-                setPosts(newData);
-            });
+                setSelectedPosts(newData);
+            })
+            console.log(selected_posts); 
     }
-   
     // This is triggered upon re-rendering
     useEffect(()=>{
         onAuthStateChanged(auth, (user) => {
@@ -172,11 +176,13 @@ const Post = () => {
     }
 
     const navigate = useNavigate();
-    console.log(posts);
     
+    
+
     function incrementLike(i) {
-        const likes = posts[i].likes;
-        console.log(likes);
+        if (userData.uid !== "") {
+            const likes = posts[i].likes;
+            console.log(likes);
         if (!likes.includes(userData.uid)) {
             likes.push(userData.uid)
         }
@@ -188,6 +194,7 @@ const Post = () => {
             likes: likes,
     
         });
+
     }
 
     function addComment(i, inputID) {
@@ -227,12 +234,91 @@ const Post = () => {
 	return "comment-display-" + i;
     }
 
+function selectPosts(tag) 
+{
+    if(tag === "club")
+    {
+        console.log("here");
+        setSelectedPosts(posts.filter(post => post.tagString.includes("club")));
+        console.log(selected_posts);
+    }
+    else if(tag === "gathering")
+    {
+        setSelectedPosts(posts.filter(post => post.tagString.includes("gathering")));
+    }
+    else if(tag === "alert")
+    {
+        setSelectedPosts(posts.filter(post => post.tagString.includes("alert")));
+    }
+    else
+    {
+        setSelectedPosts(posts);
+    }
+
+}
+    function handleNav(path) {
+       navigate(path);
+    }
+
+    
+    if(userData.uid === "") {
+        return (
+            <Container className="output-section">
+                <Card className="transition-feature">
+                    <Button variant="warning" onClick={() => handleNav("/signin")}>Click here to sign in</Button>    
+                </Card>
+
+                {selected_posts?.map((post,i)=>(
+            
+            <Card className="post">
+                <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
+                <Card.Img className="img-container" src={post.image} />
+                <Card.Text classname="post-info">
+                    
+                    <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
+                    <p key={i}>Caption: {posts[i].caption}</p>
+                    <p key={i}>Tags: {posts[i].tagString}</p>
+                    <p key={i}>Likes: {posts[i].likes.length}</p>
+                    <p key={i}>Location: {posts[i].location}</p>
+
+                </Card.Text>
+            </Card>
+
+            ))}
+            </Container>
+        )
+    } else {
+ 
     return (
         <Container className="output-section">
+
             <MDBCard className="transition-feature">
-            <MDBCardText>Welcome back, {userData.name} {setPosts}!</MDBCardText>
+            <MDBCardText>Welcome back, {userData.name} !</MDBCardText>
+	    <DropdownButton id="collasible-nav-dropdown" title="Filter by:">
+                    <Dropdown.Item onClick = {() => selectPosts("All")}>All</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPosts("club")}>Club</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPosts("gathering")}>Gathering</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPosts("alert")}>Alert</Dropdown.Item>
+                </DropdownButton>
             </MDBCard>
 
+	    {selected_posts?.map((post,i)=>(
+            
+            <Card className="post">
+                <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
+                <Card.Img className="img-container" src={post.image} />
+                <Card.Text classname="post-info">
+                    
+                    <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
+                    <p key={i}>Caption: {selected_posts[i].caption}</p>
+                    <p key={i}>Tags: {selected_posts[i].tagString}</p>
+                    <p key={i}>Location: {selected_posts[i].location}</p>
+                    <p key={i}>Posted on: {selected_posts[i].timestamp}</p>
+                    <p key={i}>Likes: {selected_posts[i].likes.length}</p>
+
+                </Card.Text>
+            </Card>
+	
 	    <br/>
 	
             {posts?.map((post,i)=>(
@@ -259,7 +345,6 @@ const Post = () => {
 		    </MDBCol>
 		</MDBRow>
             </MDBCard>
-
             ))}
 
 	<script type="text/javascript" src="Post.js" async>
@@ -270,8 +355,8 @@ const Post = () => {
 
 	
     )
+
 	/*TODO: Get comments to display when website is loaded instead of after hitting the comment button*/
-    
 
 }
  
