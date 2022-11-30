@@ -40,7 +40,9 @@ const Post = () => {
         location: "" 
     });
     const [posts, setPosts] = useState([]);
-    const [selected_posts, setSelectedPosts] = useState([]);
+    const [selected_tag, set_selected_tag] = useState({
+        tag: ""
+    });
 
     // addPost takes in the image state data and the submitted tags/captions and uploads all the data to firebase
     const addPost = async (e) => {
@@ -84,9 +86,7 @@ const Post = () => {
             .then((querySnapshot)=>{              
                 const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
                 setPosts(newData);
-                setSelectedPosts(newData);
             })
-            console.log(selected_posts); 
     }
     // This is triggered upon re-rendering
     useEffect(()=>{
@@ -190,26 +190,17 @@ const Post = () => {
         }
     }
 
+    const If = ({condition, children}) => {
+        if (condition) {
+            return children;
+        }
+    };
+
 function selectPosts(tag) 
 {
-    if(tag === "club")
-    {
-        console.log("here");
-        setSelectedPosts(posts.filter(post => post.tagString.includes("club")));
-        console.log(selected_posts);
-    }
-    else if(tag === "gathering")
-    {
-        setSelectedPosts(posts.filter(post => post.tagString.includes("gathering")));
-    }
-    else if(tag === "alert")
-    {
-        setSelectedPosts(posts.filter(post => post.tagString.includes("alert")));
-    }
-    else
-    {
-        setSelectedPosts(posts);
-    }
+    set_selected_tag({
+        tag: tag
+    })
 
 }
     function handleNav(path) {
@@ -224,7 +215,7 @@ function selectPosts(tag)
                     <Button variant="warning" onClick={() => handleNav("/signin")}>Click here to sign in</Button>    
                 </Card>
 
-                {selected_posts?.map((post,i)=>(
+                {posts?.map((post,i)=>(
             
             <Card className="post">
                 <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
@@ -251,30 +242,30 @@ function selectPosts(tag)
             <Card className="transition-feature">
                 <Card.Text>Welcome back, {userData.name}!</Card.Text>
                 <DropdownButton id="collasible-nav-dropdown" title="Filter by:">
-                    <Dropdown.Item onClick = {() => selectPosts("All")}>All</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPosts("")}>All</Dropdown.Item>
                     <Dropdown.Item onClick = {() => selectPosts("club")}>Club</Dropdown.Item>
                     <Dropdown.Item onClick = {() => selectPosts("gathering")}>Gathering</Dropdown.Item>
                     <Dropdown.Item onClick = {() => selectPosts("alert")}>Alert</Dropdown.Item>
                 </DropdownButton>
             </Card>
 
-            {selected_posts?.map((post,i)=>(
-            
-            <Card className="post">
-                <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
-                <Card.Img className="img-container" src={post.image} />
-                <Card.Text classname="post-info">
-                    
-                    <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
-                    <p key={i}>Caption: {posts[i].caption}</p>
-                    <p key={i}>Tags: {posts[i].tagString}</p>
-                    <p key={i}>Location: {selected_posts[i].location}</p>
-                    <p key={i}>Posted on: {posts[i].timestamp}</p>
-                    <p key={i}>Likes: {posts[i].likes.length}</p>
+            {posts?.map((post,i)=>(
+            <If condition={posts[i].tags.includes(selected_tag.tag) || selected_tag.tag === ""}>
+                <Card className="post">
+                    <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
+                    <Card.Img className="img-container" src={post.image} />
+                    <Card.Text classname="post-info">
+                        
+                        <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
+                        <p key={i}>Caption: {posts[i].caption}</p>
+                        <p key={i}>Tags: {posts[i].tagString}</p>
+                        <p key={i}>Location: {posts[i].location}</p>
+                        <p key={i}>Posted on: {posts[i].timestamp}</p>
+                        <p key={i}>Likes: {posts[i].likes.length}</p>
 
-                </Card.Text>
-            </Card>
-
+                    </Card.Text>
+                </Card>
+            </If>
             ))}
          
         </Container>
