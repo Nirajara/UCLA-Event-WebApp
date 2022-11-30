@@ -137,3 +137,12 @@ code {
   background-color: #206bc8;
   border: 2px solid #f0b401;
 }
+
+.profile-pic {
+  object-fit: cover;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  border: 2px solid gray;
+  background: aquamarine;
+}

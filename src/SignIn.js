@@ -17,6 +17,8 @@ const SignIn = () => {
     const navigate = useNavigate();
     //const history = useNavigate();
 
+    const [imageUpload, setImage] = useState();
+
     const [status, setStatus] = useState({
         status: "signed out"
     })
@@ -34,17 +36,23 @@ const SignIn = () => {
         if( (input.email.includes("@g.ucla.edu") || input.email.includes("@ucla.edu")) && (input.password.length > 6) && !(input.email.includes(" ")))
         {
         evt.preventDefault();  
+        const storageRef = ref(storage, imageUpload.name);
         createUserWithEmailAndPassword(auth, input.email, input.password)
             .then((userCredential) => {
                 // Signed in 
                 const uid = userCredential.user.uid;
                 // ...
                 signInWithEmailAndPassword(auth, input.email, input.password).then(() => {
-                    setDoc(doc(db, "users", uid), {
-                        name: input.name,
-                        email: input.email,
-                        bio: input.bio,
-                        posts: []
+                    uploadBytes(storageRef, imageUpload).then((snapshot) => {
+                        getDownloadURL(snapshot.ref).then( url => {
+                            setDoc(doc(db, "users", uid), {
+                                name: input.name,
+                                email: input.email,
+                                bio: input.bio,
+                                image: url,
+                                posts: []
+                            });
+                        });
                     });
                 });
             })
@@ -71,6 +79,9 @@ const SignIn = () => {
     }
 
     function handleLogin(evt) {
+        if (evt.target.name == "image") {
+            setImage(evt.target.files[0])
+        }
         setInput({
             ...input,
             [evt.target.name]: evt.target.value
@@ -118,6 +129,10 @@ const SignIn = () => {
                         <div className="input-wrapper">
                             <h2 className="input-title">Bio</h2>
                             <input type="text" placeholder="Create Bio" name="bio" value={input.bio} onChange={handleLogin}/>
+                        </div>
+                        <div className="input-wrapper">
+                            <h2 className="input-title">Profile Picture</h2>
+                            <input type="file" name="image" accept="image/*" value={input.image} onChange={handleLogin}/>
                         </div>
                         <div className="input-wrapper">
                             <Button class="btn btn-outline-warning mr-1" onClick={addAccount}>Sign Up</Button>
