@@ -59,7 +59,7 @@ const SignIn = () => {
         }
         else
         {
-        alert("Make sure password is longer than 6 characters, email is your UCLA email, and email contains no spaces")
+        alert("Make sure password is at least 7 characters, email contains no spaces and is your UCLA email")
         }
         
     }

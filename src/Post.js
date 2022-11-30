@@ -40,6 +40,7 @@ const Post = () => {
         location: "" 
     });
     const [posts, setPosts] = useState([]);
+    const [selected_posts, setSelectedPosts] = useState([]);
 
     // addPost takes in the image state data and the submitted tags/captions and uploads all the data to firebase
     const addPost = async (e) => {
@@ -82,10 +83,11 @@ const Post = () => {
         await getDocs(collection(db, "posts"))
             .then((querySnapshot)=>{              
                 const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
-                setPosts(newData);             
+                setPosts(newData);
+                setSelectedPosts(newData);
             })
+            console.log(selected_posts); 
     }
-   
     // This is triggered upon re-rendering
     useEffect(()=>{
         onAuthStateChanged(auth, (user) => {
@@ -164,7 +166,7 @@ const Post = () => {
     }
 
     const navigate = useNavigate();
-    console.log(posts);
+    
     
     function handleClick(i) {
         if (userData.uid != "") {
@@ -188,10 +190,33 @@ const Post = () => {
         }
     }
 
+function selectPosts(tag) 
+{
+    if(tag === "club")
+    {
+        console.log("here");
+        setSelectedPosts(posts.filter(post => post.tagString.includes("club")));
+        console.log(selected_posts);
+    }
+    else if(tag === "gathering")
+    {
+        setSelectedPosts(posts.filter(post => post.tagString.includes("gathering")));
+    }
+    else if(tag === "alert")
+    {
+        setSelectedPosts(posts.filter(post => post.tagString.includes("alert")));
+    }
+    else
+    {
+        setSelectedPosts(posts);
+    }
+
+}
     function handleNav(path) {
        navigate(path);
     }
 
+    
     if(userData.uid == "") {
         return (
             <Container className="output-section">
@@ -199,7 +224,7 @@ const Post = () => {
                     <Button variant="warning" onClick={() => handleNav("/signin")}>Click here to sign in</Button>    
                 </Card>
 
-                {posts?.map((post,i)=>(
+                {selected_posts?.map((post,i)=>(
             
             <Card className="post">
                 <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
@@ -225,14 +250,15 @@ const Post = () => {
         <Container className="output-section">
             <Card className="transition-feature">
                 <Card.Text>Welcome back, {userData.name}!</Card.Text>
-                <DropdownButton id="dropdown-basic-button" title="Filter by:" size = "small">
-                    <Dropdown.Item href="#/action-1">Club</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">Gathering</Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">Alert</Dropdown.Item>
+                <DropdownButton id="collasible-nav-dropdown" title="Filter by:">
+                    <Dropdown.Item onClick = {() => selectPosts("All")}>All</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPosts("club")}>Club</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPosts("gathering")}>Gathering</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPosts("alert")}>Alert</Dropdown.Item>
                 </DropdownButton>
             </Card>
 
-            {posts?.map((post,i)=>(
+            {selected_posts?.map((post,i)=>(
             
             <Card className="post">
                 <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
@@ -240,10 +266,10 @@ const Post = () => {
                 <Card.Text classname="post-info">
                     
                     <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
-                    <p key={i}>Caption: {posts[i].caption}</p>
-                    <p key={i}>Tags: {posts[i].tagString}</p>
-                    <p key={i}>Location: {posts[i].location}</p>
-                    <p key={i}>Likes: {posts[i].likes.length}</p>
+                    <p key={i}>Caption: {selected_posts[i].caption}</p>
+                    <p key={i}>Tags: {selected_posts[i].tagString}</p>
+                    <p key={i}>Location: {selected_posts[i].location}</p>
+                    <p key={i}>Likes: {selected_posts[i].likes.length}</p>
 
 
                 </Card.Text>
