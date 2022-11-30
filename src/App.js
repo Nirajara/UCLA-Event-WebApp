@@ -1,11 +1,11 @@
 import React from "react";
 import './App.css';
+import Comment from './Comment';
 import Post from './Post';
 import Upload from './Upload';
 import User from './User';
 import Navbar from './Navbar';
 import SignIn from './SignIn';
-import comment from './comments';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import Container from 'react-bootstrap/Container'
 import Row from "react-bootstrap/Row"
@@ -21,14 +21,14 @@ import "bootstrap/dist/css/bootstrap.min.css"
 
 function App() {
   return (
-
+     
     <Router>
       <div className="App">
         <Container fluid>
               <Col xs={2} className="fixed-top">
                 <Navbar />
               </Col>
-            <Col md={{ span:10, offset:4}}>
+            <Col md={{ span:10, offset:2}}>
               <div className="content">
                 <Routes>
                   <Route exact path="/SignIn" element={<SignIn />}/>

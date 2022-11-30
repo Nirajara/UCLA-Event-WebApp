@@ -78,7 +78,6 @@ function Upload() {
             date = date.slice(8, 10) + " " + date.slice(4, 7) + " " + date.slice(11, 16);
             await uploadBytes(storageRef, imageUpload).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then( url => {
-                    console.log('succ')
                     addDoc(collection(db, "posts"), {
                         image: url,
                         caption: post.caption,
