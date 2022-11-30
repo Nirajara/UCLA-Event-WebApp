@@ -17,6 +17,7 @@ import {
     MDBCol,
     MDBCardFooter
 } from 'mdb-react-ui-kit';
+import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import ListGroup from 'react-bootstrap/ListGroup';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -51,7 +52,9 @@ const Post = () => {
         location: "" 
     });
     const [posts, setPosts] = useState([]);
-    const [selected_posts, setSelectedPosts] = useState([]);
+    const [selected_tag, set_selected_tag] = useState({
+        tag: ""
+    });
 
     // addPost takes in the image state data and the submitted tags/captions and uploads all the data to firebase
     const addPost = async (e) => {
@@ -94,9 +97,8 @@ const Post = () => {
         await getDocs(collection(db, "posts"))
             .then((querySnapshot)=>{              
                 const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
-                setSelectedPosts(newData);
+                setPosts(newData);
             })
-            console.log(selected_posts); 
     }
     // This is triggered upon re-rendering
     useEffect(()=>{
@@ -176,8 +178,6 @@ const Post = () => {
     }
 
     const navigate = useNavigate();
-    
-    
 
     function incrementLike(i) {
         if (userData.uid !== "") {
@@ -194,10 +194,16 @@ const Post = () => {
             likes: likes,
     
         });
+		}
+	}
 
-    }
+    const If = ({condition, children}) => {
+        if (condition) {
+            return children;
+        }
+    };
 
-    function addComment(i, inputID) {
+    function addComment(i) {
 	var comments = posts[i].comments;
 	if (comments == null || typeof comments != "object") {
 	    comments = [document.getElementById("comment-"+i).value];
@@ -236,24 +242,9 @@ const Post = () => {
 
 function selectPosts(tag) 
 {
-    if(tag === "club")
-    {
-        console.log("here");
-        setSelectedPosts(posts.filter(post => post.tagString.includes("club")));
-        console.log(selected_posts);
-    }
-    else if(tag === "gathering")
-    {
-        setSelectedPosts(posts.filter(post => post.tagString.includes("gathering")));
-    }
-    else if(tag === "alert")
-    {
-        setSelectedPosts(posts.filter(post => post.tagString.includes("alert")));
-    }
-    else
-    {
-        setSelectedPosts(posts);
-    }
+    set_selected_tag({
+        tag: tag
+    })
 
 }
     function handleNav(path) {
@@ -264,100 +255,105 @@ function selectPosts(tag)
     if(userData.uid === "") {
         return (
             <Container className="output-section">
-                <Card className="transition-feature">
+                <MDBCard className="transition-feature">
                     <Button variant="warning" onClick={() => handleNav("/signin")}>Click here to sign in</Button>    
-                </Card>
+                </MDBCard>
 
-                {selected_posts?.map((post,i)=>(
-            
-            <Card className="post">
-                <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
-                <Card.Img className="img-container" src={post.image} />
-                <Card.Text classname="post-info">
-                    
-                    <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
-                    <p key={i}>Caption: {posts[i].caption}</p>
-                    <p key={i}>Tags: {posts[i].tagString}</p>
-                    <p key={i}>Likes: {posts[i].likes.length}</p>
-                    <p key={i}>Location: {posts[i].location}</p>
-
-                </Card.Text>
-            </Card>
-
+                {posts?.map((post,i)=>(
+                    <MDBCard className="post">
+		    <MDBRow className='g-0'>
+		    <MDBCol md="6">
+		        <MDBCardTitle key={i}>{posts[i].caption} </MDBCardTitle>
+		        <MDBCardImage className="img-container" src={post.image} fluid/>
+		    <MDBCardText classname="post-info">
+		        <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
+		        <p key={i}>Caption: {posts[i].caption}</p>
+		        <MDBRow className='g-0'>
+		        <MDBCol md="6">
+		            <p key={i}>Tags: {posts[i].tagString}</p>
+		            <p key={i}>Posted on: {posts[i].timestamp}</p>
+		        </MDBCol>
+		        <MDBCol md="6">
+		            <p key={i}>Location: {posts[i].location}</p>
+		            <p key={i}>Likes: {posts[i].likes.length}</p>
+		        </MDBCol>
+		        </MDBRow> 
+                        </MDBCardText>
+		        <Button variant = "outline-warning" onClick = {() => incrementLike(i)}>Like</Button>
+		    </MDBCol>
+		    <MDBCol md="6">
+		         <MDBCardText classname="post-info">
+  		         <MDBCardBody className="comment-section">
+               	         <ul className="comment-display" id={getCommentDisplayId(i)}></ul>
+     		         </MDBCardBody>
+             	         <input type="text" id={getCommentId(i)} placeholder="Say something nice!" name="commentInput"/>
+ 		         <Button variant="outline-warning" onClick = {() => addComment(i)}>Comment</Button>
+		    </MDBCardText>
+		    </MDBCol>
+		    </MDBRow>
+                </MDBCard>
             ))}
             </Container>
         )
     } else {
  
     return (
+        
         <Container className="output-section">
-
             <MDBCard className="transition-feature">
-            <MDBCardText>Welcome back, {userData.name} !</MDBCardText>
-	    <DropdownButton id="collasible-nav-dropdown" title="Filter by:">
-                    <Dropdown.Item onClick = {() => selectPosts("All")}>All</Dropdown.Item>
+                <MDBCardText>Welcome back, {userData.name}!</MDBCardText>
+                <DropdownButton id="collasible-nav-dropdown" title="Filter by:">
+                    <Dropdown.Item onClick = {() => selectPosts("")}>All</Dropdown.Item>
                     <Dropdown.Item onClick = {() => selectPosts("club")}>Club</Dropdown.Item>
                     <Dropdown.Item onClick = {() => selectPosts("gathering")}>Gathering</Dropdown.Item>
                     <Dropdown.Item onClick = {() => selectPosts("alert")}>Alert</Dropdown.Item>
                 </DropdownButton>
             </MDBCard>
 
-	    {selected_posts?.map((post,i)=>(
-            
-            <Card className="post">
-                <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like</Button> 
-                <Card.Img className="img-container" src={post.image} />
-                <Card.Text classname="post-info">
-                    
-                    <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
-                    <p key={i}>Caption: {selected_posts[i].caption}</p>
-                    <p key={i}>Tags: {selected_posts[i].tagString}</p>
-                    <p key={i}>Location: {selected_posts[i].location}</p>
-                    <p key={i}>Posted on: {selected_posts[i].timestamp}</p>
-                    <p key={i}>Likes: {selected_posts[i].likes.length}</p>
-
-                </Card.Text>
-            </Card>
-	
 	    <br/>
 	
             {posts?.map((post,i)=>(
-
-            <MDBCard className="post">
-   		<MDBRow className='g-0'>
+            <If condition={posts[i].tags.includes(selected_tag.tag) || selected_tag.tag === ""}>
+                    <MDBCard className="post">
+		    <MDBRow className='g-0'>
 		    <MDBCol md="6">
-        	         <MDBCardTitle key={i}>{posts[i].caption}</MDBCardTitle>
-                         <MDBCardImage className="img-container" src={post.image} fluid />
-                         <MDBCardText classname="post-info">
-              	             <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>{posts[i].poster}</p>
-    		             <p key={i}>Tags: {posts[i].tagString}</p>
-       		             <Button variant = "outline-warning" onClick = {() => incrementLike(i)}>Like {posts[i].likes}</Button>
-                         </MDBCardText>
-                    </MDBCol>
-		    <MDBCol md="6">
-		        <MDBCardText classname="post-info">
-  		            <MDBCardBody className="comment-section">
-               	                <ul className="comment-display" id={getCommentDisplayId(i)}></ul>
-     		            </MDBCardBody>
-             	            <input type="text" id={getCommentId(i)} placeholder="Say something nice!" name="commentInput"/>
- 		            <Button variant="outline-warning" onClick = {() => addComment(i, 'commentInput')}>Comment</Button>
-		        </MDBCardText>		
+		        <MDBCardTitle key={i}>{posts[i].caption} </MDBCardTitle>
+		        <MDBCardImage className="img-container" src={post.image} fluid/>
+		    <MDBCardText classname="post-info">
+		        <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
+		        <p key={i}>Caption: {posts[i].caption}</p>
+		        <MDBRow className='g-0'>
+		        <MDBCol md="6">
+		            <p key={i}>Tags: {posts[i].tagString}</p>
+		            <p key={i}>Posted on: {posts[i].timestamp}</p>
+		        </MDBCol>
+		        <MDBCol md="6">
+		            <p key={i}>Location: {posts[i].location}</p>
+		            <p key={i}>Likes: {posts[i].likes.length}</p>
+		        </MDBCol>
+		        </MDBRow> 
+                        </MDBCardText>
+		        <Button variant = "outline-warning" onClick = {() => incrementLike(i)}>Like</Button>
 		    </MDBCol>
-		</MDBRow>
-            </MDBCard>
+		    <MDBCol md="6">
+		         <MDBCardText classname="post-info">
+  		         <MDBCardBody className="comment-section">
+               	         <ul className="comment-display" id={getCommentDisplayId(i)}></ul>
+     		         </MDBCardBody>
+             	         <input type="text" id={getCommentId(i)} placeholder="Say something nice!" name="commentInput"/>
+ 		         <Button variant="outline-warning" onClick = {() => addComment(i)}>Comment</Button>
+		    </MDBCardText>
+		    </MDBCol>
+		    </MDBRow>
+                </MDBCard>
+            </If>
             ))}
-
-	<script type="text/javascript" src="Post.js" async>
-	    displayComments(i);
-	</script>
-
+         
         </Container>
 
 	
     )
-
-	/*TODO: Get comments to display when website is loaded instead of after hitting the comment button*/
-
+    }
 }
- 
+
 export default Post
