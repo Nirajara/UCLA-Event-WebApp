@@ -1,4 +1,5 @@
 import "./App.css";
+import Comment from './Comment';
 import {db} from './firebase'
 import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDocs, getDoc, doc, updateDoc } from "firebase/firestore";
@@ -89,8 +90,8 @@ const Post = () => {
         await getDocs(collection(db, "posts"))
             .then((querySnapshot)=>{              
                 const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
-                setPosts(newData);             
-            })
+                setPosts(newData);
+            });
     }
    
     // This is triggered upon re-rendering
@@ -203,6 +204,11 @@ const Post = () => {
 	    ...posts[i],
 	    comments: comments
 	});
+	displayComments(i);
+    }
+
+    function displayComments(i) {
+	var comments = posts[i].comments;
 	let list = document.getElementById("comment-display-"+i);
 	list.replaceChildren();
 	comments.forEach((item)=>{
@@ -210,7 +216,7 @@ const Post = () => {
 	    li.innerText = item;
 	    li.className = "comment";
 	    list.appendChild(li);
-	})
+	});
     }
 
     function getCommentId(i) {
@@ -220,9 +226,8 @@ const Post = () => {
     function getCommentDisplayId(i) {
 	return "comment-display-" + i;
     }
- 
+
     return (
-        
         <Container className="output-section">
             <MDBCard className="transition-feature">
             <MDBCardText>Welcome back, {userData.name} {setPosts}!</MDBCardText>
@@ -240,28 +245,33 @@ const Post = () => {
                          <MDBCardText classname="post-info">
               	             <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>{posts[i].poster}</p>
     		             <p key={i}>Tags: {posts[i].tagString}</p>
-       		    <Button variant = "outline-warning" onClick = {() => incrementLike(i)}>Like {posts[i].likes}</Button>
+       		             <Button variant = "outline-warning" onClick = {() => incrementLike(i)}>Like {posts[i].likes}</Button>
                          </MDBCardText>
                     </MDBCol>
 		    <MDBCol md="6">
 		        <MDBCardText classname="post-info">
-		            <p> COMMENT PLACEHOLDER </p>
   		            <MDBCardBody className="comment-section">
-		    <ul className="comment-display" id={getCommentDisplayId(i)}></ul>
-
+               	                <ul className="comment-display" id={getCommentDisplayId(i)}></ul>
      		            </MDBCardBody>
-             	    <input type="text" id={getCommentId(i)} placeholder="Say something nice!" name="commentInput"/>
+             	            <input type="text" id={getCommentId(i)} placeholder="Say something nice!" name="commentInput"/>
  		            <Button variant="outline-warning" onClick = {() => addComment(i, 'commentInput')}>Comment</Button>
-		    </MDBCardText>		
-OA		    </MDBCol>
+		        </MDBCardText>		
+		    </MDBCol>
 		</MDBRow>
             </MDBCard>
 
             ))}
-         
+
+	<script type="text/javascript" src="Post.js" async>
+	    displayComments(i);
+	</script>
+
         </Container>
-        
+
+	
     )
+	/*TODO: Get comments to display when website is loaded instead of after hitting the comment button*/
+    
 
 }
  
