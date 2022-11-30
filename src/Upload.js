@@ -10,6 +10,7 @@ import Overlay from 'react-bootstrap/Overlay';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
+import axios from 'axios';
 
 function Upload() {
 
@@ -36,12 +37,44 @@ function Upload() {
     const [show, setShow] = useState(false);
     const target = useRef(null);
 
+    const getPosterLocation = () => {
+        if (navigator.geolocation) {
+          // ADDED FROM HERE 
+          navigator.geolocation.getCurrentPosition(position => {
+            console.log(position.coords);
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            var config = {
+                method: 'get',
+                headers: { 
+                    'Access-Control-Allow-Origin' : '*',
+                    'Access-Control-Allow-Headers': 'Origin',
+                    'Access-Control-Allow-Credentials': true
+                },
+                origin: "*"
+              };
+              
+              axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522%2C151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyCNoCckrtCEMDlbupj9XS5K6sG9T7JsJMY', config).then(function (response) {
+                console.log(JSON.stringify(response.data));
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          });
+          // ADDED UNTIL HERE                                                  
+        } else {
+          // code for legacy browsers
+        }
+    };
+
     // addPost takes in the image state data and the submitted tags/captions and uploads all the data to firebase
     const addPost = async (e) => {
         e.preventDefault();  
         console.log("UID:", userData.uid);
         try {
             const storageRef = ref(storage, imageUpload.name);
+            var date = new Date().toString();
+            date = date.slice(8, 10) + " " + date.slice(4, 7) + " " + date.slice(11, 16);
             await uploadBytes(storageRef, imageUpload).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then( url => {
                     console.log('succ')
@@ -53,7 +86,7 @@ function Upload() {
                         poster: userData.name,
                         posterID: userData.uid,
                         location: "HI",
-                        timstamp: "TBD",
+                        timestamp: date,
                         likes: post.likes,
                         comments: []
                     }).then(docRef => {
@@ -82,6 +115,7 @@ function Upload() {
    
     // This is triggered upon re-rendering
     useEffect(()=>{
+        getPosterLocation();
         onAuthStateChanged(auth, (user) => {
             getDoc(doc(db, "users", user.uid)).then(user_doc => {
                 const data = user_doc.data();

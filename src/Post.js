@@ -52,7 +52,7 @@ const Post = () => {
 			            tagString: post.tagString,
                         poster: userData.name,
                         location: "TBD",
-                        timstamp: "TBD",
+                        timestamp: post.timestamp,
                         likes: post.likes,
                         comments: []
                     }).then(docRef => {
@@ -232,6 +232,7 @@ const Post = () => {
                     <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
                     <p key={i}>Caption: {posts[i].caption}</p>
                     <p key={i}>Tags: {posts[i].tagString}</p>
+                    <p key={i}>Posted on: {posts[i].timestamp}</p>
                     <p key={i}>Likes: {posts[i].likes.length}</p>
 
                 </Card.Text>
