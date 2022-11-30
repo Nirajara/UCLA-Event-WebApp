@@ -5,6 +5,7 @@ import { collection, addDoc, getDocs, getDoc, doc, updateDoc } from "firebase/fi
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useLocation } from 'react-router-dom';
+import "./index.css";
 
 
 const User = () => {
@@ -28,6 +29,7 @@ const User = () => {
             setState({
                 name: data.name,
                 bio: data.bio,
+                image: data.image,
             })
             getDocs(collection(db, "posts")).then((querySnapshot) => {
                 querySnapshot.forEach((post) => {
@@ -56,6 +58,7 @@ const User = () => {
     
         <div className="output-section">
             <div className="user-card">
+                <img className="profile-pic" src={state.image}></img>
                 <p>Name: {state.name}</p>
                 <p>Bio: {state.bio}</p>
                 <p>Trophies 🏆: {posts.posts.length}</p>
