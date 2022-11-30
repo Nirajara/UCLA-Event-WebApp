@@ -26,6 +26,33 @@ code {
 
 }
 
+.comment-section {
+    width: 98%;
+    height: 500px;
+    float: center right;
+    margin: auto;
+}
+
+.comment-display {
+    list-style: none;
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.comment-display::-webkit-scrollbar {
+    width: 1em;
+}
+
+.comment {
+    border-radius: .5em;
+    border: 1px solid #f0b401;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    min-height: 30px;
+}
+
 .inputs, .post, .user-card, .transition-feature {
   width: 100%;
   border-radius: 1em;

@@ -13,7 +13,8 @@ import {
     MDBCardBody,
     MDBCardImage,
     MDBRow,
-    MDBCol
+    MDBCol,
+    MDBCardFooter
 } from 'mdb-react-ui-kit';
 import Container from "react-bootstrap/Container";
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -25,7 +26,7 @@ const Post = () => {
     const storage = getStorage();
     const auth = getAuth();
     const location = useLocation();
-
+    
     // Initializing state variables to store image and other post data
     const [userData, setUserData] = useState({
         name: "",
@@ -41,7 +42,8 @@ const Post = () => {
         caption: "",
         tags: [],
         likes: [],
-	    tagString: "",
+	comments: [],
+	tagString: "",
         changed: false
     });
     const [posts, setPosts] = useState([]);
@@ -57,12 +59,12 @@ const Post = () => {
                         image: url,
                         caption: post.caption,
                         tags: post.tags,
-			            tagString: post.tagString,
+			tagString: post.tagString,
                         poster: userData.name,
                         location: "TBD",
                         timstamp: "TBD",
                         likes: post.likes,
-                        comments: []
+                        comments: post.comments
                     }).then(docRef => {
                         const posts = userData.posts;
                         posts.push(docRef.id)
@@ -143,7 +145,7 @@ const Post = () => {
                 setPost({
                     ...post,
                     tags: tags,
-		    tagString: tagsToString(tags)
+		    tagString: tagsToString(tags),
                 });
             } catch {
                 const tags = [];
@@ -155,7 +157,7 @@ const Post = () => {
                 setPost({
                     ...post,
                     tags: tags,
-		    tagString: tagsToString(tags)
+		    tagString: tagsToString(tags),
                 });
             }
         } 
@@ -171,7 +173,7 @@ const Post = () => {
     const navigate = useNavigate();
     console.log(posts);
     
-    function handleClick(i) {
+    function incrementLike(i) {
         const likes = posts[i].likes;
         console.log(likes);
         if (!likes.includes(userData.uid)) {
@@ -185,14 +187,45 @@ const Post = () => {
             likes: likes,
     
         });
-        console.log("HI")
+    }
+
+    function addComment(i, inputID) {
+	var comments = posts[i].comments;
+	if (comments == null || typeof comments != "object") {
+	    comments = [document.getElementById("comment-"+i).value];
+	} else {
+	    comments.push(document.getElementById("comment-"+i).value);
+	}
+	updateDoc(doc(db, "posts", posts[i].id), {
+	    comments: comments
+	});
+	setPost({
+	    ...posts[i],
+	    comments: comments
+	});
+	let list = document.getElementById("comment-display-"+i);
+	list.replaceChildren();
+	comments.forEach((item)=>{
+	    let li = document.createElement("li");
+	    li.innerText = item;
+	    li.className = "comment";
+	    list.appendChild(li);
+	})
+    }
+
+    function getCommentId(i) {
+	return "comment-" + i;
+    }
+
+    function getCommentDisplayId(i) {
+	return "comment-display-" + i;
     }
  
     return (
         
         <Container className="output-section">
             <MDBCard className="transition-feature">
-                <MDBCardText>Welcome back, {userData.name}!</MDBCardText>
+            <MDBCardText>Welcome back, {userData.name} {setPosts}!</MDBCardText>
             </MDBCard>
 
 	    <br/>
@@ -202,19 +235,25 @@ const Post = () => {
             <MDBCard className="post">
    		<MDBRow className='g-0'>
 		    <MDBCol md="6">
-        	    <MDBCardTitle key={i}>{posts[i].caption}</MDBCardTitle>
-                    <MDBCardImage className="img-container" src={post.image} fluid />
-                    <MDBCardText classname="post-info">
-		        <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>{posts[i].poster}</p>
-    		        <p key={i}>Tags: {posts[i].tagString}</p>
-       		        <Button variant = "outline-warning" onClick = {() => handleClick(i)}>Like {posts[i].likes}</Button> 
-                    </MDBCardText>
+        	         <MDBCardTitle key={i}>{posts[i].caption}</MDBCardTitle>
+                         <MDBCardImage className="img-container" src={post.image} fluid />
+                         <MDBCardText classname="post-info">
+              	             <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>{posts[i].poster}</p>
+    		             <p key={i}>Tags: {posts[i].tagString}</p>
+       		    <Button variant = "outline-warning" onClick = {() => incrementLike(i)}>Like {posts[i].likes}</Button>
+                         </MDBCardText>
                     </MDBCol>
 		    <MDBCol md="6">
-		    <MDBCardText classname="post-info">
-		    <p> COMMENT PLACEHOLDER {posts[i].comments} </p>
-		    </MDBCardText>
-		    </MDBCol>
+		        <MDBCardText classname="post-info">
+		            <p> COMMENT PLACEHOLDER </p>
+  		            <MDBCardBody className="comment-section">
+		    <ul className="comment-display" id={getCommentDisplayId(i)}></ul>
+
+     		            </MDBCardBody>
+             	    <input type="text" id={getCommentId(i)} placeholder="Say something nice!" name="commentInput"/>
+ 		            <Button variant="outline-warning" onClick = {() => addComment(i, 'commentInput')}>Comment</Button>
+		    </MDBCardText>		
+OA		    </MDBCol>
 		</MDBRow>
             </MDBCard>
 

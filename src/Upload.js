@@ -36,7 +36,6 @@ function Upload() {
             const storageRef = ref(storage, imageUpload.name);
             await uploadBytes(storageRef, imageUpload).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then( url => {
-                    console.log('succ')
                     addDoc(collection(db, "posts"), {
                         image: url,
                         caption: post.caption,
