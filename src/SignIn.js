@@ -24,12 +24,15 @@ const SignIn = () => {
     const [input, setInput] = useState({
         name: "",
         email: "",
-        password: ""
+        password: "",
+        bio: ""
     });
 
     setPersistence(auth, browserLocalPersistence);
-
+    
     function addAccount(evt) {
+        if( (input.email.includes("@g.ucla.edu") || input.email.includes("@ucla.edu")) && (input.password.length > 6) && !(input.email.includes(" ")))
+        {
         evt.preventDefault();  
         createUserWithEmailAndPassword(auth, input.email, input.password)
             .then((userCredential) => {
@@ -40,7 +43,7 @@ const SignIn = () => {
                     setDoc(doc(db, "users", uid), {
                         name: input.name,
                         email: input.email,
-                        bio: "",
+                        bio: input.bio,
                         posts: []
                     });
                 });
@@ -52,6 +55,19 @@ const SignIn = () => {
                 // ..
         });
         navigate("/post");
+        alert("Succesful Sign up")
+        }
+        else
+        {
+        alert("Make sure password is at least 7 characters, email contains no spaces and is your UCLA email")
+        }
+        
+    }
+   
+
+    function signIn() {
+        signInWithEmailAndPassword(auth, input.email, input.password);
+        navigate("/post")
     }
 
     function handleLogin(evt) {
@@ -60,6 +76,7 @@ const SignIn = () => {
             [evt.target.name]: evt.target.value
         })
     }
+    
 
     useEffect(()=>{
         onAuthStateChanged(auth, (user) => {
@@ -99,7 +116,12 @@ const SignIn = () => {
                             <input type="text" placeholder="Enter password" name="password" value={input.password} onChange={handleLogin}/>
                         </div>
                         <div className="input-wrapper">
-                            <Button variant="outline-warning" onClick={addAccount}>Sign up</Button>
+                            <h2 className="input-title">Bio</h2>
+                            <input type="text" placeholder="Create Bio" name="bio" value={input.bio} onChange={handleLogin}/>
+                        </div>
+                        <div className="input-wrapper">
+                            <Button class="btn btn-outline-warning mr-1" onClick={addAccount}>Sign Up</Button>
+                            <Button class="btn btn-outline-warning" onClick={signIn}>Sign In</Button>
                         </div>
                     </div>
                 </form>

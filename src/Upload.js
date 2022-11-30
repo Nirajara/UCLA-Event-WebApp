@@ -30,7 +30,8 @@ function Upload() {
         caption: "",
         tags: [],
         likes: [],
-	    tagString: ""
+	    tagString: "",
+        location: ""
     });
     const [posts, setPosts] = useState([]);
 
@@ -85,7 +86,7 @@ function Upload() {
 			            tagString: post.tagString,
                         poster: userData.name,
                         posterID: userData.uid,
-                        location: "HI",
+                        location: post.location,
                         timestamp: date,
                         likes: post.likes,
                         comments: []
@@ -211,6 +212,10 @@ function Upload() {
                         <div className="input-wrapper">
                             <h2 className="input-title">Post Caption</h2>
                             <input type="text" placeholder="Enter caption" name="caption" value={post.caption} onChange={handlePost}/>
+                        </div>
+                        <div className="input-wrapper">
+                            <h2 className="input-title">Post Location</h2>
+                            <input type="text" placeholder="Enter Location" name="location" value={post.location} onChange={handlePost}/>
                         </div>
                         <div className="input-wrapper">
                             <h2 className="input-title">Post Tags</h2>

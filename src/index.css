@@ -100,3 +100,9 @@ code {
     padding: 10px;
     background-color: #b7d4ff;
 }
+#collasible-nav-dropdown{
+  color: #b7d4ff;
+  font-weight: bold;
+  background-color: #206bc8;
+  border: 2px solid #f0b401;
+}
