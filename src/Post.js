@@ -169,7 +169,7 @@ const Post = () => {
     
     
     function handleClick(i) {
-        if (userData.uid != "") {
+        if (userData.uid !== "") {
         const likes = posts[i].likes;
         console.log(likes);
         if (!likes.includes(userData.uid)) {
@@ -208,7 +208,7 @@ function selectPosts(tag)
     }
 
     
-    if(userData.uid == "") {
+    if(userData.uid === "") {
         return (
             <Container className="output-section">
                 <Card className="transition-feature">
