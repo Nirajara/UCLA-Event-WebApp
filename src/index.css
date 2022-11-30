@@ -27,10 +27,16 @@ code {
 }
 
 .comment-section {
+  
+}
+
+.comment {
+  display: block;
     width: 98%;
     height: 65vh;
     float: center right;
     margin: auto;
+  position: relative;
 }
 
 .comment-display {
@@ -44,14 +50,7 @@ code {
     width: 1em;
 }
 
-.comment {
-    border-radius: .5em;
-    border: 1px solid #f0b401;
-    text-align: left;
-    padding-left: 10px;
-    padding-right: 10px;
-    min-height: 30px;
-}
+
 
 .inputs, .post, .user-card, .transition-feature {
   width: 100%;

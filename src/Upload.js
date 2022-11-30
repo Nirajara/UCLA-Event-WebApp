@@ -31,6 +31,7 @@ function Upload() {
         tags: [],
         likes: [],
 	    tagString: "",
+        timestamp: "",
         location: ""
     });
     const [posts, setPosts] = useState([]);
@@ -75,6 +76,7 @@ function Upload() {
         try {
             const storageRef = ref(storage, imageUpload.name);
             var date = new Date().toString();
+
             date = date.slice(8, 10) + " " + date.slice(4, 7) + " " + date.slice(11, 16);
             await uploadBytes(storageRef, imageUpload).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then( url => {

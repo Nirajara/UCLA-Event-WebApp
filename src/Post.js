@@ -47,14 +47,17 @@ const Post = () => {
         caption: "",
         tags: [],
         likes: [],
-	comments: [],
-	tagString: "",
-        location: "" 
+	    comments: [],
+	    tagString: "",
+        location: "",
+        timestamp: ""  
     });
     const [posts, setPosts] = useState([]);
     const [selected_tag, set_selected_tag] = useState({
-        tag: ""
+        tag: "",
     });
+    const [selected_posts, setSelectedPosts] = useState([]);
+
 
     // addPost takes in the image state data and the submitted tags/captions and uploads all the data to firebase
     const addPost = async (e) => {
@@ -67,7 +70,7 @@ const Post = () => {
                         image: url,
                         caption: post.caption,
                         tags: post.tags,
-			tagString: post.tagString,
+			            tagString: post.tagString,
                         poster: userData.name,
                         location: post.location,
                         timestamp: post.timestamp,
@@ -98,7 +101,9 @@ const Post = () => {
             .then((querySnapshot)=>{              
                 const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
                 setPosts(newData);
+                setSelectedPosts(newData);
             })
+    console.log(selected_posts)
     }
     // This is triggered upon re-rendering
     useEffect(()=>{
@@ -203,6 +208,7 @@ const Post = () => {
         }
     };
 
+
     function addComment(i) {
 	var comments = posts[i].comments;
 	if (comments == null || typeof comments != "object") {
@@ -240,14 +246,65 @@ const Post = () => {
 	return "comment-display-" + i;
     }
 
-function selectPosts(tag) 
-{
-    set_selected_tag({
-        tag: tag
-    })
+// function selectPosts(tag) 
+// {
+//     set_selected_tag({
+//         tag: tag
+//     })
+// }
+    
+// function selectPosts(tag) 
+// {
+//     if(tag === "Jan" || tag === "Feb" || tag === "Mar" || tag === "Apr" || tag === "Jun" || tag === "Jul" || tag === "Aug" || tag === "Sep" || tag === "Oct" || tag === "Nov" || tag === "Dec")
+//     {
+//         console.log("in Jan")
+//         set_selected_month({
+//             time: tag
+//         })
+//         console.log(selected_month.time)
+//     }
+//     else
+//     {
+//     console.log("in alert")
+//     set_selected_tag({
+//         tag: tag 
+//     })
+//     console.log(selected_tag.tag)
+// }
+// }
 
+function selectPostsAbhi(tag) 
+{
+    if(tag === "club" || tag === "gathering" || tag === "alert")
+    {
+        console.log("here");
+        setSelectedPosts(posts.filter(post => post.tagString.includes(tag)));
+        console.log(selected_posts);
+    }
+    // else if(tag === "gathering")
+    // {
+    //     setSelectedPosts(posts.filter(post => post.tagString.includes(tag)));
+    // }
+    // else if(tag === "alert")
+    // {
+    //     setSelectedPosts(posts.filter(post => post.tagString.includes(tag)));
+    // }
+    else if(tag === "Jan" || tag === "Feb" || tag === "Mar" || tag === "Apr" || tag === "May" || tag === "Jun" || tag === "Jul" || tag === "Aug" || tag === "Sep" || tag === "Oct" || tag === "Nov" || tag === "Dec")
+    {
+        for(let i = 0; i < posts.length; i++)
+        {
+            console.log(posts[i].timestamp)
+        }
+        // console.log("in month")
+        // setSelectedPosts(posts.filter(post => post.timestamp.includes(tag)));
+        // console.log(selected_posts);
+    }
+    else{
+        setSelectedPosts(posts)
+    }
 }
-    function handleNav(path) {
+
+function handleNav(path) {
        navigate(path);
     }
 
@@ -296,47 +353,65 @@ function selectPosts(tag)
             </Container>
         )
     } else {
+        
  
     return (
         
         <Container className="output-section">
             <MDBCard className="transition-feature">
                 <MDBCardText>Welcome back, {userData.name}!</MDBCardText>
-                <DropdownButton id="collasible-nav-dropdown" title="Filter by:">
-                    <Dropdown.Item onClick = {() => selectPosts("")}>All</Dropdown.Item>
-                    <Dropdown.Item onClick = {() => selectPosts("club")}>Club</Dropdown.Item>
-                    <Dropdown.Item onClick = {() => selectPosts("gathering")}>Gathering</Dropdown.Item>
-                    <Dropdown.Item onClick = {() => selectPosts("alert")}>Alert</Dropdown.Item>
+                <DropdownButton id="collasible-nav-dropdown" title="Filter by Tags:">
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("")}>All</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("club")}>Club</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("gathering")}>Gathering</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("alert")}>Alert</Dropdown.Item>
+                </DropdownButton>
+
+                <DropdownButton id="collasible-nav-dropdown" title="Filter by Months:">
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("All")}>All</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Jan")}>January</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Feb")}>February</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Mar")}>March</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Apr")}>April</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("May")}>May</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Jun")}>June</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Jul")}>July</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Aug")}>August</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Sep")}>September</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Oct")}>October</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Nov")}>November</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Dec")}>December</Dropdown.Item>
                 </DropdownButton>
             </MDBCard>
 
 	    <br/>
 	
-            {posts?.map((post,i)=>(
-            <If condition={posts[i].tags.includes(selected_tag.tag) || selected_tag.tag === ""}>
+            {selected_posts?.map((post,i)=>(
+            
+            // <If condition={posts[i].timestamp.includes(selected_month.time) || selected_month.time === ""}>
                     <MDBCard className="post">
 		    <MDBRow className='g-0'>
 		    <MDBCol md="6">
-		        <MDBCardTitle key={i}>{posts[i].caption} </MDBCardTitle>
+		        <MDBCardTitle key={i}>{selected_posts[i].caption} </MDBCardTitle>
 		        <MDBCardImage className="img-container" src={post.image} fluid/>
 		    <MDBCardText classname="post-info">
-		        <p key={i} onClick={() => navigate("/user", { state: { id: posts[i].posterID} })}>Poster: {posts[i].poster}</p>
-		        <p key={i}>Caption: {posts[i].caption}</p>
+		        <p key={i} onClick={() => navigate("/user", { state: { id: selected_posts[i].posterID} })}>Poster: {selected_posts[i].poster}</p>
+		        <p key={i}>Caption: {selected_posts[i].caption}</p>
 		        <MDBRow className='g-0'>
 		        <MDBCol md="6">
-		            <p key={i}>Tags: {posts[i].tagString}</p>
-		            <p key={i}>Posted on: {posts[i].timestamp}</p>
+		            <p key={i}>Tags: {selected_posts[i].tagString}</p>
+		            <p key={i}>Posted on: {selected_posts[i].timestamp}</p>
 		        </MDBCol>
 		        <MDBCol md="6">
-		            <p key={i}>Location: {posts[i].location}</p>
-		            <p key={i}>Likes: {posts[i].likes.length}</p>
+		            <p key={i}>Location: {selected_posts[i].location}</p>
+		            <p key={i}>Likes: {selected_posts[i].likes.length}</p>
 		        </MDBCol>
 		        </MDBRow> 
                         </MDBCardText>
 		        <Button variant = "outline-warning" onClick = {() => incrementLike(i)}>Like</Button>
 		    </MDBCol>
 		    <MDBCol md="6">
-		         <MDBCardText classname="post-info">
+		         <MDBCardText classname="comments">
   		         <MDBCardBody className="comment-section">
                	         <ul className="comment-display" id={getCommentDisplayId(i)}></ul>
      		         </MDBCardBody>
@@ -346,9 +421,10 @@ function selectPosts(tag)
 		    </MDBCol>
 		    </MDBRow>
                 </MDBCard>
-            </If>
+            /* </If> */
+            
             ))}
-         
+        
         </Container>
 
 	
