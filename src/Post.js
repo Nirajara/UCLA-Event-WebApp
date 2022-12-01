@@ -398,27 +398,26 @@ function handleNav(path) {
 		        <MDBCardImage className="img-container" src={post.image} fluid/>
 		    <MDBCardText classname="post-info">
 		        <p key={i} onClick={() => navigate("/user", { state: { id: selected_posts[i].posterID} })}>Poster: {selected_posts[i].poster}</p>
-		        <p key={i}>Caption: {selected_posts[i].caption}</p>
 		        <MDBRow className='g-0'>
 		        <MDBCol md="6">
-		            <p key={i}>Tags: {selected_posts[i].tagString}</p>
-		            <p key={i}>Posted on: {selected_posts[i].timestamp}</p>
+		            <p className="post-attribute" key={i}>{selected_posts[i].tagString}</p>
+		            <p className="post-attribute" key={i}>{selected_posts[i].timestamp}</p>
 		        </MDBCol>
 		        <MDBCol md="6">
-		            <p key={i}>Location: {selected_posts[i].location}</p>
-		            <p key={i}>Likes: {selected_posts[i].likes.length}</p>
+		            <p className="post-attribute" key={i}>{selected_posts[i].location}</p>
+		            <p className="post-attribute" key={i}>{selected_posts[i].likes.length} likes</p>
 		        </MDBCol>
+                <Button className="like-button" variant = "outline-warning" onClick = {() => incrementLike(i)}>Like</Button>
 		        </MDBRow> 
-                        </MDBCardText>
-		        <Button variant = "outline-warning" onClick = {() => incrementLike(i)}>Like</Button>
+                </MDBCardText>
 		    </MDBCol>
 		    <MDBCol md="6">
 		         <MDBCardText classname="comments">
   		         <MDBCardBody className="comment-section">
                	         <ul className="comment-display" id={getCommentDisplayId(i)}></ul>
-     		         </MDBCardBody>
-             	         <input type="text" id={getCommentId(i)} placeholder="Say something nice!" name="commentInput"/>
- 		         <Button variant="outline-warning" onClick = {() => addComment(i)}>Comment</Button>
+     		    </MDBCardBody>
+             	        <input className="text-input-box" type="text" id={getCommentId(i)} placeholder="Say something nice!" name="commentInput"/>
+ 		                <Button className="comment-button" variant="outline-warning" onClick = {() => addComment(i)}>Comment</Button>
 		    </MDBCardText>
 		    </MDBCol>
 		    </MDBRow>
