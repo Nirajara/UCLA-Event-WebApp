@@ -240,6 +240,17 @@ const Post = () => {
 	});
     }
 
+    function displayCommentsInit(i) {
+	var comments = posts[i].comments;
+	var list = [];
+	comments.forEach((item)=>{
+	    let li = (<li className="comment">{item}</li>);
+	    list.push(li);
+	});
+	return (<ul className="comment-display">{list}</ul>);
+    }
+   
+
     function getCommentId(i) {
 	return "comment-" + i;
     }
@@ -342,9 +353,7 @@ function handleNav(path) {
 		    </MDBCol>
 		    <MDBCol md="6">
 		         <MDBCardText classname="post-info">
-  		         <MDBCardBody className="comment-section">
-               	         <ul className="comment-display" id={getCommentDisplayId(i)}></ul>
-     		         </MDBCardBody>
+  		         <MDBCardBody className="comment-section">{displayCommentsInit(i)}</MDBCardBody>
              	         <input type="text" id={getCommentId(i)} placeholder="Say something nice!" name="commentInput"/>
  		         <Button variant="outline-warning" onClick = {() => addComment(i)}>Comment</Button>
 		    </MDBCardText>
@@ -413,9 +422,7 @@ function handleNav(path) {
 		    </MDBCol>
 		    <MDBCol md="6">
 		         <MDBCardText classname="comments">
-  		         <MDBCardBody className="comment-section">
-               	         <ul className="comment-display" id={getCommentDisplayId(i)}></ul>
-     		    </MDBCardBody>
+  		         <MDBCardBody className="comment-section">{displayCommentsInit(i)}</MDBCardBody>
              	        <input className="text-input-box" type="text" id={getCommentId(i)} placeholder="Say something nice!" name="commentInput"/>
  		                <Button className="comment-button" variant="outline-warning" onClick = {() => addComment(i)}>Comment</Button>
 		    </MDBCardText>
