@@ -166,3 +166,8 @@ input {
   border: 2px solid gray;
   background: aquamarine;
 }
+#Basic
+{
+  display: flex;
+  justify-content: center;
+}

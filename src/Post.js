@@ -7,6 +7,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Link, useNavigate } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import {
     MDBCard,
     MDBCardTitle,
@@ -288,29 +289,15 @@ const Post = () => {
 
 function selectPostsAbhi(tag) 
 {
-    if(tag === "club" || tag === "gathering" || tag === "alert")
-    {
-        console.log("here");
-        setSelectedPosts(posts.filter(post => post.tagString.includes(tag)));
-        console.log(selected_posts);
-    }
-    // else if(tag === "gathering")
-    // {
-    //     setSelectedPosts(posts.filter(post => post.tagString.includes(tag)));
-    // }
-    // else if(tag === "alert")
-    // {
-    //     setSelectedPosts(posts.filter(post => post.tagString.includes(tag)));
-    // }
-    else if(tag === "Jan" || tag === "Feb" || tag === "Mar" || tag === "Apr" || tag === "May" || tag === "Jun" || tag === "Jul" || tag === "Aug" || tag === "Sep" || tag === "Oct" || tag === "Nov" || tag === "Dec")
-    {
-        console.log("in month")
-        setSelectedPosts(posts.filter(post => post.timestamp.includes(tag)));
-        console.log(selected_posts);
-    }
-    else{
-        setSelectedPosts(posts)
-    }
+    if(tag === "club" || tag === "gathering" || tag === "alert"){setSelectedPosts(posts.filter(post => post.tagString.includes(tag)));}
+    else if(tag === "Jan" || tag === "Feb" || tag === "Mar" || tag === "Apr" || tag === "May" || tag === "Jun" || tag === "Jul" || tag === "Aug" || tag === "Sep" || tag === "Oct" || tag === "Nov" || tag === "Dec"){setSelectedPosts(posts.filter(post => post.timestamp.includes(tag)));}
+    else if(tag === "0"){setSelectedPosts(posts.filter(post => post.likes.length === 0));}
+    else if(tag === "Range: 1-5"){setSelectedPosts(posts.filter(post => (post.likes.length > 0) && (post.likes.length < 6)));} 
+    else if(tag === "Range: 6-10"){setSelectedPosts(posts.filter(post => (post.likes.length > 6) && (post.likes.length < 11)));}
+    else if(tag === "Range: 11-15"){setSelectedPosts(posts.filter(post => (post.likes.length > 11) && (post.likes.length < 16)));}
+    else if(tag === "Range: 16-20"){setSelectedPosts(posts.filter(post => (post.likes.length > 16) && (post.likes.length < 21)));} 
+    else if(tag === "Range: 21-35"){setSelectedPosts(posts.filter(post => (post.likes.length > 21) && (post.likes.length < 36)));}
+    else{setSelectedPosts(posts)}
 
 }
 
@@ -368,6 +355,7 @@ function handleNav(path) {
         <Container className="output-section">
             <MDBCard className="transition-feature">
                 <MDBCardText>Welcome back, {userData.name}!</MDBCardText>
+                <ButtonGroup aria-label="Basic example" id = "Basic">
                 <DropdownButton id="collasible-nav-dropdown" title="Filter by Tags:">
                     <Dropdown.Item onClick = {() => selectPostsAbhi("")}>All</Dropdown.Item>
                     <Dropdown.Item onClick = {() => selectPostsAbhi("club")}>Club</Dropdown.Item>
@@ -390,6 +378,17 @@ function handleNav(path) {
                     <Dropdown.Item onClick = {() => selectPostsAbhi("Nov")}>November</Dropdown.Item>
                     <Dropdown.Item onClick = {() => selectPostsAbhi("Dec")}>December</Dropdown.Item>
                 </DropdownButton>
+
+                <DropdownButton id="collasible-nav-dropdown" title="Filter by Likes:">
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("")}>All</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("0")}>None</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Range: 1-5")}>Range: 1-5</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Range: 6-10")}>Range: 6-10</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Range: 11-15")}>Range: 11-15</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Range: 16-20")}>Range: 16-20</Dropdown.Item>
+                    <Dropdown.Item onClick = {() => selectPostsAbhi("Range: 21-35")}>Range: 21-35</Dropdown.Item>
+                </DropdownButton>
+                </ButtonGroup>
             </MDBCard>
 
 	    <br/>
