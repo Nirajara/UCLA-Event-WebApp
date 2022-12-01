@@ -211,18 +211,20 @@ const Post = () => {
 
     function addComment(i) {
 	var comments = posts[i].comments;
-	if (comments == null || typeof comments != "object") {
-	    comments = [document.getElementById("comment-"+i).value];
-	} else {
-	    comments.push(document.getElementById("comment-"+i).value);
+	if (document.getElementById("comment-"+i).value !== "") {
+	    if (comments == null || typeof comments != "object") {
+		comments = [document.getElementById("comment-"+i).value];
+	    } else {
+		comments.push(document.getElementById("comment-"+i).value);
+	    }
+	    updateDoc(doc(db, "posts", posts[i].id), {
+		comments: comments
+	    });
+	    setPost({
+		...posts[i],
+		comments: comments
+	    });
 	}
-	updateDoc(doc(db, "posts", posts[i].id), {
-	    comments: comments
-	});
-	setPost({
-	    ...posts[i],
-	    comments: comments
-	});
 	displayComments(i);
     }
 
