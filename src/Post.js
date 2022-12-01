@@ -304,17 +304,14 @@ function selectPostsAbhi(tag)
     // }
     else if(tag === "Jan" || tag === "Feb" || tag === "Mar" || tag === "Apr" || tag === "May" || tag === "Jun" || tag === "Jul" || tag === "Aug" || tag === "Sep" || tag === "Oct" || tag === "Nov" || tag === "Dec")
     {
-        for(let i = 0; i < posts.length; i++)
-        {
-            console.log(posts[i].timestamp)
-        }
-        // console.log("in month")
-        // setSelectedPosts(posts.filter(post => post.timestamp.includes(tag)));
-        // console.log(selected_posts);
+        console.log("in month")
+        setSelectedPosts(posts.filter(post => post.timestamp.includes(tag)));
+        console.log(selected_posts);
     }
     else{
         setSelectedPosts(posts)
     }
+
 }
 
 function handleNav(path) {
@@ -404,7 +401,7 @@ function handleNav(path) {
 		    <MDBRow className='g-0'>
 		    <MDBCol md="6">
 		        <MDBCardTitle key={i}>{selected_posts[i].caption} </MDBCardTitle>
-		        <MDBCardImage className="img-container" src={post.image} fluid/>
+		        <MDBCardImage className="img-container" src={selected_posts[i].image} fluid/>
 		    <MDBCardText classname="post-info">
 		        <p key={i} onClick={() => navigate("/user", { state: { id: selected_posts[i].posterID} })}>Poster: {selected_posts[i].poster}</p>
 		        <MDBRow className='g-0'>

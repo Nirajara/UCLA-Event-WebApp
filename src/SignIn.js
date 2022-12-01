@@ -33,8 +33,25 @@ const SignIn = () => {
     setPersistence(auth, browserLocalPersistence);
     
     function addAccount(evt) {
-        if( (input.email.includes("@g.ucla.edu") || input.email.includes("@ucla.edu")) && (input.password.length > 6) && !(input.email.includes(" ")))
+        // if( (input.email.includes("@g.ucla.edu") || input.email.includes("@ucla.edu")) && (input.password.length > 6) && !(input.email.includes(" ") && !input.password.includes(" ")))
+        if(  !(input.email.includes("@g.ucla.edu") || input.email.includes("@ucla.edu"))   )
         {
+        alert("Make sure you use your UCLA email.")
+        }
+        if(input.email.includes(" "))
+        {
+        alert("Make sure email contains no white space")
+        }
+        if(input.password.length <= 6)
+        {
+        alert("Make sure password is at least 7 characters long")
+        }
+        if(input.password.includes(" "))
+        {
+        console.log("jacky")
+        alert("Make sure password contains no white space")
+        }
+        else{
         evt.preventDefault();  
         const storageRef = ref(storage, imageUpload.name);
         createUserWithEmailAndPassword(auth, input.email, input.password)
@@ -64,12 +81,7 @@ const SignIn = () => {
         });
         navigate("/post");
         alert("Succesful Sign up")
-        }
-        else
-        {
-        alert("Make sure password is at least 7 characters, email contains no spaces and is your UCLA email")
-        }
-        
+    }
     }
    
 
