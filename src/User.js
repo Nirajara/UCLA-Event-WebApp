@@ -68,7 +68,7 @@ const User = () => {
             {posts.posts?.map((post,i)=>(
             <div className="post">
                 <div className="img-container">
-                    <img className="post-img" src={post.image} fluid></img>
+                    <img className="post-img" src={post.image}></img>
                 </div>
                 <div classname="post-info">
                     <p key={i}>Poster: {post.poster}</p>

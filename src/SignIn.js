@@ -33,25 +33,41 @@ const SignIn = () => {
     setPersistence(auth, browserLocalPersistence);
     
     function addAccount(evt) {
+        let errorState = false;
         // if( (input.email.includes("@g.ucla.edu") || input.email.includes("@ucla.edu")) && (input.password.length > 6) && !(input.email.includes(" ") && !input.password.includes(" ")))
+        if(input.email[0] === '@')
+        {
+        console.log("starts with @")
+        errorState = true;
+        alert("Make sure email contains a prefix.")
+        }
         if(  !(input.email.includes("@g.ucla.edu") || input.email.includes("@ucla.edu"))   )
         {
+        errorState = true;
         alert("Make sure you use your UCLA email.")
         }
         if(input.email.includes(" "))
         {
+        errorState = true;
         alert("Make sure email contains no white space")
         }
         if(input.password.length <= 6)
         {
+        errorState = true;
         alert("Make sure password is at least 7 characters long")
         }
         if(input.password.includes(" "))
         {
-        console.log("jacky")
+        errorState = true;
         alert("Make sure password contains no white space")
         }
-        else{
+        if(typeof input.image === 'undefined')
+        {
+            console.log("no pfp provided")
+            errorState = true;
+            alert("Make sure to include a profile picture")
+        }
+        else if(errorState === false){
         evt.preventDefault();  
         const storageRef = ref(storage, imageUpload.name);
         createUserWithEmailAndPassword(auth, input.email, input.password)
