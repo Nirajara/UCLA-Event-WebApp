@@ -124,6 +124,17 @@ input {
   padding-left: 0em;
 }
 
+.img-container{
+  width: 100%;
+  height: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
+  object-fit: cover;
+  border: 2px solid grey;
+  border-radius: 1em;
+}
 .img-container .post-img{
   width: 100%;
   height: auto;
@@ -132,10 +143,10 @@ input {
   margin-left: auto;
   margin-right: auto;
   object-fit: cover;
-  max-height: 40vw;
   border: 2px solid grey;
   border-radius: 1em;
 }
+
 
 .post-attribute {
   background: #f0b401;
